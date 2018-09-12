@@ -774,7 +774,7 @@ class WP_Test_REST_Tags_Controller extends WP_Test_REST_Controller_Testcase {
 	public function test_create_item_with_meta_wrong_id() {
 		wp_set_current_user( self::$administrator );
 		$existing_tag_id = $this->factory->tag->create( array( 'name' => 'My Not So Awesome Term' ) );
-		$request = new WP_REST_Request( 'POST', '/wp/v2/tags' );
+		$request         = new WP_REST_Request( 'POST', '/wp/v2/tags' );
 		$request->set_param( 'name', 'My Awesome Term' );
 		$request->set_param( 'meta', array( 'test_tag_single' => 'hello' ) );
 		$request->set_param( 'id', $existing_tag_id );
