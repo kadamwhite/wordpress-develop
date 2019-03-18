@@ -602,8 +602,9 @@ function rest_send_cors_headers( $value ) {
  * @since 4.4.0
  *
  * @param mixed           $response Current response, either response or `null` to indicate pass-through.
- * @param WP_REST_Server  $handler  ResponseHandler instance (usually WP_REST_Server).
- * @param WP_REST_Request $request  The request that was used to make current response.
+ * @param WP_REST_Server  $handler ResponseHandler instance (usually WP_REST_Server).
+ * @param WP_REST_Request $request The request that was used to make current response.
+ *
  * @return WP_REST_Response Modified response, either response or `null` to indicate pass-through.
  */
 function rest_handle_options_request( $response, $handler, $request ) {
@@ -615,10 +616,25 @@ function rest_handle_options_request( $response, $handler, $request ) {
 	$data     = array();
 
 	foreach ( $handler->get_routes() as $route => $endpoints ) {
-		$match = preg_match( '@^' . $route . '$@i', $request->get_route() );
+		$match = preg_match( '@^' . $route . '$@i', $request->get_route(), $matches );
 
 		if ( ! $match ) {
 			continue;
+		}
+
+		$args = array();
+		foreach ( $matches as $param => $value ) {
+			if ( ! is_int( $param ) ) {
+				$args[ $param ] = $value;
+			}
+		}
+
+		foreach ( $endpoints as $endpoint ) {
+			// Remove the redundant preg_match argument.
+			unset( $args[0] );
+
+			$request->set_url_params( $args );
+			$request->set_attributes( $endpoint );
 		}
 
 		$data = $handler->get_data_for_route( $route, $endpoints, 'help' );
@@ -626,7 +642,10 @@ function rest_handle_options_request( $response, $handler, $request ) {
 		break;
 	}
 
+	$response = rest_send_allow_header( $response, $handler, $request );
+
 	$response->set_data( $data );
+
 	return $response;
 }
 
