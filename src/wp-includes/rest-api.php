@@ -602,8 +602,8 @@ function rest_send_cors_headers( $value ) {
  * @since 4.4.0
  *
  * @param mixed           $response Current response, either response or `null` to indicate pass-through.
- * @param WP_REST_Server  $handler ResponseHandler instance (usually WP_REST_Server).
- * @param WP_REST_Request $request The request that was used to make current response.
+ * @param WP_REST_Server  $handler  ResponseHandler instance (usually WP_REST_Server).
+ * @param WP_REST_Request $request  The request that was used to make current response.
  *
  * @return WP_REST_Response Modified response, either response or `null` to indicate pass-through.
  */
@@ -641,8 +641,6 @@ function rest_handle_options_request( $response, $handler, $request ) {
 		$response->set_matched_route( $route );
 		break;
 	}
-
-	$response = rest_send_allow_header( $response, $handler, $request );
 
 	$response->set_data( $data );
 
