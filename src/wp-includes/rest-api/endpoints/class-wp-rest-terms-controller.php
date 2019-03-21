@@ -688,10 +688,6 @@ class WP_REST_Terms_Controller extends WP_REST_Controller {
 			$parent_term_id   = 0;
 			$requested_parent = (int) $request['parent'];
 
-			if ( 0 === $requested_parent ) {
-				$parent_term_id = $requested_parent;
-			}
-
 			if ( $requested_parent ) {
 				$parent_term = get_term( $requested_parent, $this->taxonomy );
 

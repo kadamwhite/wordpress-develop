@@ -861,7 +861,7 @@ class WP_Test_REST_Categories_Controller extends WP_Test_REST_Controller_Testcas
 
 	public function test_create_item_with_no_parent() {
 		wp_set_current_user( self::$administrator );
-		$parent = 0;
+		$parent  = 0;
 		$request = new WP_REST_Request( 'POST', '/wp/v2/categories' );
 		$request->set_param( 'name', 'My Awesome Term' );
 		$request->set_param( 'parent', $parent );
