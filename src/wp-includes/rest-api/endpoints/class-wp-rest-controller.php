@@ -562,7 +562,49 @@ abstract class WP_REST_Controller {
 		if ( in_array( 'id', $fields, true ) ) {
 			$requested_fields[] = 'id';
 		}
-		return array_intersect( $fields, $requested_fields );
+		// Return the list of all requested fields which appear in the schema.
+		return array_reduce(
+			$requested_fields,
+			function( $response_fields, $field ) use ( $fields ) {
+				if ( in_array( $field, $fields, true ) ) {
+					$response_fields[] = $field;
+					return $response_fields;
+				}
+				// Check for nested fields if $field is not a direct match.
+				$nested_fields = explode( '.', $field );
+				// A nested field is included so long as its top-level property is
+				// present in the schema.
+				if ( in_array( $nested_fields[0], $fields, true ) ) {
+					$response_fields[] = $field;
+					return $response_fields;
+				}
+			},
+			array()
+		);
+		// return array_merge( $fields, $requested_fields );
+	}
+
+	/**
+	 * Given an array of fields to include in the response, some of which may be
+	 * `nested.fields`, determine whether a provided field should be included in
+	 * the response body.
+	 *
+	 * If a parent field is passed in, the presence of any nested field within
+	 * that parent will cause the method to return `true`. For example "title"
+	 * will return true if any of `title`, `title.raw` or `title.rendered` is
+	 * provided.
+	 *
+	 * @since 5.3.0
+	 *
+	 * @param string $field  A field to test for inclusion in the response body.
+	 * @param array  $fields An array of string fields supported by the endpoint.
+	 * @return bool Whether to include the field or not.
+	 */
+	public function is_field_included( $field, $fields ) {
+		if ( in_array( $field, $fields, true ) ) {
+			return true;
+		}
+		return false;
 	}
 
 	/**
