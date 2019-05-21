@@ -604,6 +604,18 @@ abstract class WP_REST_Controller {
 		if ( in_array( $field, $fields, true ) ) {
 			return true;
 		}
+		foreach ( $fields as $accepted_field ) {
+			// Check to see if $field is the parent of any item in $fields.
+			// A field "parent" should be accepted if "parent.child" is accepted.
+			if ( strpos( $accepted_field, "$field." ) === 0 ) {
+				return true;
+			}
+			// Conversely, if "parent" is accepted, all "parent.child" fields should
+			// also be accepted.
+			if ( strpos( $field, "$accepted_field." ) === 0 ) {
+				return true;
+			}
+		}
 		return false;
 	}
 

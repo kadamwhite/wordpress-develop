@@ -343,6 +343,27 @@ class WP_Test_REST_Controller extends WP_Test_REST_TestCase {
 		$this->assertGreaterThan( 0, $listener->get_call_count( $method ) );
 	}
 
+	public function test_is_field_included() {
+		$controller = new WP_REST_Test_Controller();
+
+		$fields = array(
+			'id',
+			'title',
+			'content.raw',
+		);
+
+		$this->assertTrue( $controller->is_field_included( 'id', $fields ) );
+		$this->assertTrue( $controller->is_field_included( 'title', $fields ) );
+		$this->assertTrue( $controller->is_field_included( 'title.raw', $fields ) );
+		$this->assertTrue( $controller->is_field_included( 'title.rendered', $fields ) );
+		$this->assertTrue( $controller->is_field_included( 'content', $fields ) );
+		$this->assertTrue( $controller->is_field_included( 'content.raw', $fields ) );
+		$this->assertFalse( $controller->is_field_included( 'content.rendered', $fields ) );
+		$this->assertFalse( $controller->is_field_included( 'type', $fields ) );
+		$this->assertFalse( $controller->is_field_included( 'meta', $fields ) );
+		$this->assertFalse( $controller->is_field_included( 'meta.value', $fields ) );
+	}
+
 	public function test_add_additional_fields_to_object_respects_fields_param() {
 		$controller = new WP_REST_Test_Controller();
 		$request    = new WP_REST_Request( 'GET', '/wp/v2/testroute' );
