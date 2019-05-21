@@ -745,13 +745,13 @@ function rest_filter_response_fields( $response, $server, $request ) {
 	$fields_as_keyed = array();
 	foreach ( $fields as $field ) {
 		$parts = explode( '.', $field );
-		$ref = &$fields_as_keyed;
+		$ref   = &$fields_as_keyed;
 		while ( count( $parts ) > 1 ) {
-			$next = array_shift( $parts );
+			$next         = array_shift( $parts );
 			$ref[ $next ] = array();
-			$ref = &$ref[ $next ];
+			$ref          = &$ref[ $next ];
 		}
-		$last = array_shift( $parts );
+		$last         = array_shift( $parts );
 		$ref[ $last ] = true;
 	}
 
