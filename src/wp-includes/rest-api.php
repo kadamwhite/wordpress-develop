@@ -708,7 +708,7 @@ function _rest_array_intersect_key_recursive( $array1, $array2 ) {
 	$array1 = array_intersect_key( $array1, $array2 );
 	foreach ( $array1 as $key => $value ) {
 		if ( is_array( $value ) && is_array( $array2[ $key ] ) ) {
-			$value = _rest_array_intersect_key_recursive( $value, $array2[ $key ] );
+			$array1[ $key ] = _rest_array_intersect_key_recursive( $value, $array2[ $key ] );
 		}
 	}
 	return $array1;
