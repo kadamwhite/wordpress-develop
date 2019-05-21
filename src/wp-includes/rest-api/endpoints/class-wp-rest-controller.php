@@ -576,8 +576,8 @@ abstract class WP_REST_Controller {
 				// present in the schema.
 				if ( in_array( $nested_fields[0], $fields, true ) ) {
 					$response_fields[] = $field;
-					return $response_fields;
 				}
+				return $response_fields;
 			},
 			array()
 		);
