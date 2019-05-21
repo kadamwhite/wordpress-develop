@@ -538,7 +538,7 @@ class Tests_REST_API extends WP_UnitTestCase {
 			),
 		) );
 		$request = array(
-			'_fields' => array( 'b.1', 'c', 'd.5' )
+			'_fields' => 'b.1,c,d.5',
 		);
 
 		$response = rest_filter_response_fields( $response, null, $request );
