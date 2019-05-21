@@ -581,7 +581,6 @@ abstract class WP_REST_Controller {
 			},
 			array()
 		);
-		// return array_merge( $fields, $requested_fields );
 	}
 
 	/**

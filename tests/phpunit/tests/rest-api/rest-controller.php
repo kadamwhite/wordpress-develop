@@ -350,6 +350,7 @@ class WP_Test_REST_Controller extends WP_Test_REST_TestCase {
 			'id',
 			'title',
 			'content.raw',
+			'custom.property',
 		);
 
 		$this->assertTrue( $controller->is_field_included( 'id', $fields ) );
@@ -358,6 +359,7 @@ class WP_Test_REST_Controller extends WP_Test_REST_TestCase {
 		$this->assertTrue( $controller->is_field_included( 'title.rendered', $fields ) );
 		$this->assertTrue( $controller->is_field_included( 'content', $fields ) );
 		$this->assertTrue( $controller->is_field_included( 'content.raw', $fields ) );
+		$this->assertTrue( $controller->is_field_included( 'custom.property', $fields ) );
 		$this->assertFalse( $controller->is_field_included( 'content.rendered', $fields ) );
 		$this->assertFalse( $controller->is_field_included( 'type', $fields ) );
 		$this->assertFalse( $controller->is_field_included( 'meta', $fields ) );

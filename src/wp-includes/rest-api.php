@@ -739,7 +739,7 @@ function rest_filter_response_fields( $response, $server, $request ) {
 	}
 
 	// Trim off outside whitespace from the comma delimited list.
-	// $fields = array_map( 'trim', $fields );
+	$fields = array_map( 'trim', $fields );
 
 	// Create nested array of accepted field hierarchy.
 	$fields_as_keyed = array();
@@ -755,62 +755,12 @@ function rest_filter_response_fields( $response, $server, $request ) {
 		$ref[ $last ] = true;
 	}
 
-
-	// $fields_as_keyed = array_reduce( $fields, function( $fields_as_keyed, $field ) {
-	// 	$field_parts = explode( '.', $field );
-	// 	if ( count( $field_parts ) === 1 ) {
-	// 		$fields_as_keyed[ trim( $field ) ] = true;
-	// 		return $fields_as_keyed;
-	// 	}
-	// 	for ( $i = 1; $i < count( $field_parts ); $i++ ) {
-	// 		$has_child_field = isset( $field_parts[ $i + 1 ] );
-	// 		$exists_in_keys = isset( $ )
-	// 		if ( isset( $field_parts[ $i + 1 ] ) ) {
-
-	// 		}
-	// 	}
-	// }, array() );
-	// function build_thing( $keys ) {
-	// 	$fields_as_keyed = array();
-	// 	foreach ( $keys as $key ) {
-	// 		$parts = explode( '.', $key );
-	// 		$ref = &$fields_as_keyed;
-	// 		while ( count( $parts ) > 1 ) {
-	// 			$next = array_shift( $parts );
-	// 			$ref[ $next ] = array();
-	// 			$ref = &$ref[ $next ];
-	// 		}
-	// 		$last = array_shift( $parts );
-	// 		$ref[ $last ] = true;
-	// 	}
-	// 	return $result;
-	// }
-	// var_dump( build_thing( [ 'a', 'b.c.d' ] ) );
-
-	// $filter_item = function( $data ) use ( $fields ) {
-	// 	$new_data = array();
-	// 	foreach ( $fields as $field ) {
-	// 		$field_parts = explode( '.', $field );
-	// 		if ( count( $field_parts ) === 1 && isset( $data[ $field_parts[0] ] ) ) {
-	// 			$new_data[ $field_parts[0] ] = $data[ $field_parts[0] ];
-	// 			continue;
-	// 		}
-	// 		if ( isset( $data[ $field_parts[0] ] ) ) {
-	// 			$new_data[ $field_parts[0] ] = $data[ $field_parts[0] ];
-	// 			continue;
-	// 		}
-	// 	}
-	// 	return $new_data;
-	// };
-
 	if ( wp_is_numeric_array( $data ) ) {
 		$new_data = array();
 		foreach ( $data as $item ) {
-			// $new_data[] = $filter_item( $item );
 			$new_data[] = _rest_array_intersect_key_recursive( $item, $fields_as_keyed );
 		}
 	} else {
-		// $new_data = $filter_item( $data );
 		$new_data = _rest_array_intersect_key_recursive( $data, $fields_as_keyed );
 	}
 
