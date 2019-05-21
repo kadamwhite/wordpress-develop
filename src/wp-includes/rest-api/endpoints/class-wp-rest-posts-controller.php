@@ -1506,12 +1506,15 @@ class WP_REST_Posts_Controller extends WP_REST_Controller {
 		}
 
 		if ( $this->is_field_included( 'title', $fields ) ) {
+			$data['title'] = array();
+		}
+		if ( $this->is_field_included( 'title.raw', $fields ) ) {
+			$data['title']['raw'] = $post->post_title;
+		}
+		if ( $this->is_field_included( 'title.rendered', $fields ) ) {
 			add_filter( 'protected_title_format', array( $this, 'protected_title_format' ) );
 
-			$data['title'] = array(
-				'raw'      => $post->post_title,
-				'rendered' => get_the_title( $post->ID ),
-			);
+			$data['title']['rendered'] = get_the_title( $post->ID );
 
 			remove_filter( 'protected_title_format', array( $this, 'protected_title_format' ) );
 		}
@@ -1526,13 +1529,20 @@ class WP_REST_Posts_Controller extends WP_REST_Controller {
 		}
 
 		if ( $this->is_field_included( 'content', $fields ) ) {
-			$data['content'] = array(
-				'raw'           => $post->post_content,
-				/** This filter is documented in wp-includes/post-template.php */
-				'rendered'      => post_password_required( $post ) ? '' : apply_filters( 'the_content', $post->post_content ),
-				'protected'     => (bool) $post->post_password,
-				'block_version' => block_version( $post->post_content ),
-			);
+			$data['content'] = array();
+		}
+		if ( $this->is_field_included( 'content.raw', $fields ) ) {
+			$data['content']['raw'] = $post->post_content;
+		}
+		if ( $this->is_field_included( 'content.rendered', $fields ) ) {
+			/** This filter is documented in wp-includes/post-template.php */
+			$data['content']['rendered'] = post_password_required( $post ) ? '' : apply_filters( 'the_content', $post->post_content );
+		}
+		if ( $this->is_field_included( 'content.protected', $fields ) ) {
+			$data['content']['protected'] = (bool) $post->post_password;
+		}
+		if ( $this->is_field_included( 'content.block_version', $fields ) ) {
+			$data['content']['block_version'] = block_version( $post->post_content );
 		}
 
 		if ( $this->is_field_included( 'excerpt', $fields ) ) {

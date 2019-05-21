@@ -699,16 +699,17 @@ function rest_send_allow_header( $response, $server, $request ) {
 /**
  * Recursively computes the intersection of arrays using keys for comparison.
  *
- * @param   array $array1 The array with master keys to check.
- * @param   array $array2 An array to compare keys against.
- * @return  array associative array containing all the entries of array1 which have keys that are present in array2.
+ * @param  array $array1 The array with master keys to check.
+ * @param  array $array2 An array to compare keys against.
+ *
+ * @return array An associative array containing all the entries of array1 which have keys that are present in all arguments.
  */
-function _rest_array_intersect_keys_recursive( $array1, $array2 ) {
+function _rest_array_intersect_key_recursive( $array1, $array2 ) {
 	$array1 = array_intersect_key( $array1, $array2 );
 	foreach ( $array1 as $key => $value ) {
-			if ( is_array( $value ) && is_array( $array2[ $key ] ) ) {
-					$value = _rest_array_intersect_keys_recursive( $value, $array2[ $key ] );
-			}
+		if ( is_array( $value ) && is_array( $array2[ $key ] ) ) {
+			$value = _rest_array_intersect_key_recursive( $value, $array2[ $key ] );
+		}
 	}
 	return $array1;
 }
@@ -806,11 +807,11 @@ function rest_filter_response_fields( $response, $server, $request ) {
 		$new_data = array();
 		foreach ( $data as $item ) {
 			// $new_data[] = $filter_item( $item );
-			$new_data[] = _rest_array_intersect_keys_recursive( $item, $fields_as_keyed );
+			$new_data[] = _rest_array_intersect_key_recursive( $item, $fields_as_keyed );
 		}
 	} else {
 		// $new_data = $filter_item( $data );
-		$new_data = _rest_array_intersect_keys_recursive( $data, $fields_as_keyed );
+		$new_data = _rest_array_intersect_key_recursive( $data, $fields_as_keyed );
 	}
 
 	$response->set_data( $new_data );
