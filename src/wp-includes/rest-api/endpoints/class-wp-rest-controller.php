@@ -517,7 +517,7 @@ abstract class WP_REST_Controller {
 	 * @return array Fields to be included in the response.
 	 */
 	public function get_fields_for_response( $request ) {
-		$schema = $this->get_item_schema();
+		$schema     = $this->get_item_schema();
 		$properties = isset( $schema['properties'] ) ? $schema['properties'] : array();
 
 		$additional_fields = $this->get_additional_fields();
