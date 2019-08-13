@@ -278,7 +278,12 @@ abstract class WP_REST_Controller {
 	 * @return array Item schema data.
 	 */
 	public function get_item_schema() {
-		return $this->add_additional_fields_schema( array() );
+		if ( $this->schema ) {
+			return $this->schema;
+		}
+
+		$this->schema = $this->add_additional_fields_schema( array() );
+		return $this->schema;
 	}
 
 	/**
