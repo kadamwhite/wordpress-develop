@@ -296,6 +296,8 @@ class WP_REST_Autosaves_Controller extends WP_REST_Revisions_Controller {
 	 * @return array Item schema data.
 	 */
 	public function get_item_schema() {
+		// Because this controller depends on additional fields which might be added
+		// to the revisions controller schema, do not cache the resulting schema here.
 		$schema = $this->revisions_controller->get_item_schema();
 
 		$schema['properties']['preview_link'] = array(
