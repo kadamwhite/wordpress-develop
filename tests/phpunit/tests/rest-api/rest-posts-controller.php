@@ -3918,6 +3918,11 @@ class WP_Test_REST_Posts_Controller extends WP_Test_REST_Post_Type_Controller_Te
 	public function test_author_action_ldo_not_registered_for_post_types_without_author_support() {
 
 		remove_post_type_support( 'post', 'author' );
+		// Reregister the route to pick up the new post type schema.
+		$GLOBALS['wp_rest_server']->override_by_default = true;
+		$controller                                     = new WP_REST_Posts_Controller( 'post' );
+		$controller->register_routes();
+		$GLOBALS['wp_rest_server']->override_by_default = false;
 
 		$response = rest_get_server()->dispatch( new WP_REST_Request( 'OPTIONS', '/wp/v2/posts' ) );
 		$data     = $response->get_data();
