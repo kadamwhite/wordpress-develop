@@ -1871,7 +1871,7 @@ class WP_REST_Posts_Controller extends WP_REST_Controller {
 	 */
 	public function get_item_schema() {
 		if ( $this->schema ) {
-			return $this->schema;
+			return $this->add_additional_fields_schema( $this->schema );
 		}
 
 		$schema = array(
@@ -2232,8 +2232,8 @@ class WP_REST_Posts_Controller extends WP_REST_Controller {
 			$schema['links'] = $schema_links;
 		}
 
-		$this->schema = $this->add_additional_fields_schema( $schema );
-		return $this->schema;
+		$this->schema = $schema;
+		return $this->add_additional_fields_schema( $this->schema );
 	}
 
 	/**
