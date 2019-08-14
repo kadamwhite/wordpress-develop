@@ -1181,6 +1181,7 @@ class WP_REST_Users_Controller extends WP_REST_Controller {
 		if ( $this->schema ) {
 			return $this->add_additional_fields_schema( $this->schema );
 		}
+
 		$schema = array(
 			'$schema'    => 'http://json-schema.org/draft-04/schema#',
 			'title'      => 'user',
