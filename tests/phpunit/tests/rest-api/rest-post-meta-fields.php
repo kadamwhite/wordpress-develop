@@ -1980,7 +1980,7 @@ class WP_Test_REST_Post_Meta_Fields extends WP_Test_REST_TestCase {
 	/**
 	 * @ticket 43392
 	 */
-	public function test_meta_values_are_not_set_to_null_in_response_if_type_safe() {
+	public function test_meta_values_are_not_set_to_null_in_response_if_type_safely_serializable() {
 		register_post_meta(
 			'post',
 			'boolean',

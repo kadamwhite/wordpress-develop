@@ -1,6 +1,6 @@
 <?php
 /**
- * Unit Tests: JsonSerializbale_Object
+ * Unit Tests: JsonSerializable_Object
  *
  * @package WordPress
  * @subpackage UnitTests

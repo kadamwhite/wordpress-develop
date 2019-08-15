@@ -286,9 +286,9 @@ abstract class WP_REST_Meta_Fields {
 			unset( $to_add[ $add_key ] );
 		}
 
-		// `delete_metadata` removes _all_ instances of the value, so only call once. Otherwise, delete_metadata
-		// will return false for subsequent calls of the same value.
-		// Use serialization to produce a stable string that can be used by array_unique.
+		// `delete_metadata` removes _all_ instances of the value, so only call once. Otherwise,
+		// `delete_metadata` will return false for subsequent calls of the same value.
+		// Use serialization to produce a predictable string that can be used by array_unique.
 		$to_remove = array_map( 'maybe_unserialize', array_unique( array_map( 'maybe_serialize', $to_remove ) ) );
 
 		foreach ( $to_remove as $value ) {
@@ -569,9 +569,9 @@ abstract class WP_REST_Meta_Fields {
 			case 'number':
 				return 0.0;
 			case 'array':
-				return [];
+				return array();
 			case 'object':
-				return [];
+				return array();
 			default:
 				return null;
 		}
