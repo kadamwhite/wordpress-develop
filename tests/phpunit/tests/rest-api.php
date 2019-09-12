@@ -744,4 +744,14 @@ class Tests_REST_API extends WP_UnitTestCase {
 
 		$GLOBALS['wp_rest_server'] = $rest_server;
 	}
+
+	/**
+	 * Ensure rest_ensure_response promotes an API path string to a WP_REST_Request.
+	 */
+	function test_rest_ensure_response_accepts_path_string() {
+		$request = rest_ensure_request( '/wp/v2/posts' );
+		$this->assertInstanceOf( 'WP_REST_Request', $request );
+		$this->assertEquals( '/wp/v2/posts', $request->get_route() );
+		$this->assertEquals( 'GET', $request->get_method() );
+	}
 }
