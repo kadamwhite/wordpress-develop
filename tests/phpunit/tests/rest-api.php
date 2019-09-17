@@ -558,6 +558,27 @@ class Tests_REST_API extends WP_UnitTestCase {
 		);
 	}
 
+	public function test_rest_is_field_included() {
+		$fields = array(
+			'id',
+			'title',
+			'content.raw',
+			'custom.property',
+		);
+
+		$this->assertTrue( rest_is_field_included( 'id', $fields ) );
+		$this->assertTrue( rest_is_field_included( 'title', $fields ) );
+		$this->assertTrue( rest_is_field_included( 'title.raw', $fields ) );
+		$this->assertTrue( rest_is_field_included( 'title.rendered', $fields ) );
+		$this->assertTrue( rest_is_field_included( 'content', $fields ) );
+		$this->assertTrue( rest_is_field_included( 'content.raw', $fields ) );
+		$this->assertTrue( rest_is_field_included( 'custom.property', $fields ) );
+		$this->assertFalse( rest_is_field_included( 'content.rendered', $fields ) );
+		$this->assertFalse( rest_is_field_included( 'type', $fields ) );
+		$this->assertFalse( rest_is_field_included( 'meta', $fields ) );
+		$this->assertFalse( rest_is_field_included( 'meta.value', $fields ) );
+	}
+
 	/**
 	 * The get_rest_url function should return a URL consistently terminated with a "/",
 	 * whether the blog is configured with pretty permalink support or not.
