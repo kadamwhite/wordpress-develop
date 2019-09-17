@@ -521,6 +521,8 @@ class Tests_REST_API extends WP_UnitTestCase {
 
 	/**
 	 * Ensure that nested fields may be whitelisted with request['_fields'].
+	 *
+	 * @ticket 42094
 	 */
 	public function test_rest_filter_response_fields_nested_field_filter() {
 		$response = new WP_REST_Response();
@@ -558,6 +560,9 @@ class Tests_REST_API extends WP_UnitTestCase {
 		);
 	}
 
+	/**
+	 * @ticket 42094
+	 */
 	public function test_rest_is_field_included() {
 		$fields = array(
 			'id',
