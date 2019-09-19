@@ -1623,8 +1623,8 @@ class WP_REST_Posts_Controller extends WP_REST_Controller {
 
 		$post_type_obj = get_post_type_object( $post->post_type );
 		if ( is_post_type_viewable( $post_type_obj ) && $post_type_obj->public ) {
-			$permalink_template_requested = in_array( 'permalink_template', $fields, true );
-			$generated_slug_requested     = in_array( 'generated_slug', $fields, true );
+			$permalink_template_requested = rest_is_field_included( 'permalink_template', $fields );
+			$generated_slug_requested     = rest_is_field_included( 'generated_slug', $fields );
 
 			if ( $permalink_template_requested || $generated_slug_requested ) {
 				if ( ! function_exists( 'get_sample_permalink' ) ) {
@@ -1633,11 +1633,11 @@ class WP_REST_Posts_Controller extends WP_REST_Controller {
 
 				$sample_permalink = get_sample_permalink( $post->ID, $post->post_title, '' );
 
-				if ( $permalink_template_requested && rest_is_field_included( 'permalink_template', $fields ) ) {
+				if ( $permalink_template_requested ) {
 					$data['permalink_template'] = $sample_permalink[0];
 				}
 
-				if ( $generated_slug_requested && rest_is_field_included( 'generated_slug', $fields ) ) {
+				if ( $generated_slug_requested ) {
 					$data['generated_slug'] = $sample_permalink[1];
 				}
 			}
