@@ -1291,7 +1291,7 @@ function rest_validate_value_from_schema( $value, $args, $param = '' ) {
 	if ( isset( $args['format'] ) ) {
 		switch ( $args['format'] ) {
 			case 'date-time':
-				if ( ! rest_parse_date( $value ) ) {
+				if ( ! empty( $value ) && ! rest_parse_date( $value ) ) {
 					return new WP_Error( 'rest_invalid_date', __( 'Invalid date.' ) );
 				}
 				break;

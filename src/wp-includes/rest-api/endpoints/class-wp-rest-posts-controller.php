@@ -1036,6 +1036,16 @@ class WP_REST_Posts_Controller extends WP_REST_Controller {
 			}
 		}
 
+		// Sending a blank (null or empty string) date or date_gmt value resets date and date_gmt to their
+		// default values (`0000-00-00 00:00:00`).
+		if (
+			( isset( $request['date_gmt'] ) && '' === $request['date_gmt'] ) ||
+			( isset( $request['date'] ) && '' === $request['date'] )
+		) {
+			$prepared_post->post_date_gmt = null;
+			$prepared_post->post_date     = null;
+		}
+
 		// Post slug.
 		if ( ! empty( $schema['properties']['slug'] ) && isset( $request['slug'] ) ) {
 			$prepared_post->post_name = $request['slug'];
@@ -1891,13 +1901,13 @@ class WP_REST_Posts_Controller extends WP_REST_Controller {
 			'properties' => array(
 				'date'         => array(
 					'description' => __( "The date the object was published, in the site's timezone." ),
-					'type'        => 'string',
+					'type'        => [ 'string', 'null' ],
 					'format'      => 'date-time',
 					'context'     => array( 'view', 'edit', 'embed' ),
 				),
 				'date_gmt'     => array(
 					'description' => __( 'The date the object was published, as GMT.' ),
-					'type'        => 'string',
+					'type'        => [ 'string', 'null' ],
 					'format'      => 'date-time',
 					'context'     => array( 'view', 'edit' ),
 				),
