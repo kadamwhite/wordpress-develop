@@ -4359,10 +4359,12 @@ class WP_Test_REST_Posts_Controller extends WP_Test_REST_Post_Type_Controller_Te
 
 		$time = date( 'Y-m-d H:i:s' );
 
-		$post = self::factory()->post->create_and_get( array(
-			'post_status' => 'draft',
-			'post_date'   => $time,
-		) );
+		$post = self::factory()->post->create_and_get(
+			array(
+				'post_status' => 'draft',
+				'post_date'   => $time,
+			)
+		);
 
 		$this->assertEquals( '0000-00-00 00:00:00', $post->post_date_gmt );
 
@@ -4391,10 +4393,12 @@ class WP_Test_REST_Posts_Controller extends WP_Test_REST_Post_Type_Controller_Te
 		$time     = date( 'Y-m-d H:i:s' );
 		$new_time = date( 'Y-m-d H:i:s', strtotime( '+1 week' ) );
 
-		$post = self::factory()->post->create_and_get( array(
-			'post_status' => 'draft',
-			'post_date'   => $time,
-		) );
+		$post = self::factory()->post->create_and_get(
+			array(
+				'post_status' => 'draft',
+				'post_date'   => $time,
+			)
+		);
 
 		$this->assertEquals( '0000-00-00 00:00:00', $post->post_date_gmt );
 
@@ -4405,9 +4409,14 @@ class WP_Test_REST_Posts_Controller extends WP_Test_REST_Post_Type_Controller_Te
 		$get_body = $get->get_data();
 
 		$put = new WP_REST_Request( 'PUT', "/wp/v2/posts/{$post->ID}" );
-		$put->set_body_params( array_merge( $get_body, array(
-			'date' => mysql_to_rfc3339( $new_time ),
-		) ) );
+		$put->set_body_params(
+			array_merge(
+				$get_body,
+				array(
+					'date' => mysql_to_rfc3339( $new_time ),
+				)
+			)
+		);
 
 		$response = rest_get_server()->dispatch( $put );
 		$body     = $response->get_data();
@@ -4423,10 +4432,12 @@ class WP_Test_REST_Posts_Controller extends WP_Test_REST_Post_Type_Controller_Te
 
 		$time = date( 'Y-m-d H:i:s' );
 
-		$post = self::factory()->post->create_and_get( array(
-			'post_status' => 'draft',
-			'post_date'   => $time,
-		) );
+		$post = self::factory()->post->create_and_get(
+			array(
+				'post_status' => 'draft',
+				'post_date'   => $time,
+			)
+		);
 
 		$this->assertEquals( '0000-00-00 00:00:00', $post->post_date_gmt );
 
@@ -4437,9 +4448,14 @@ class WP_Test_REST_Posts_Controller extends WP_Test_REST_Post_Type_Controller_Te
 		$get_body = $get->get_data();
 
 		$put = new WP_REST_Request( 'PUT', "/wp/v2/posts/{$post->ID}" );
-		$put->set_body_params( array_merge( $get_body, array(
-			'status' => 'publish',
-		) ) );
+		$put->set_body_params(
+			array_merge(
+				$get_body,
+				array(
+					'status' => 'publish',
+				)
+			)
+		);
 
 		$response = rest_get_server()->dispatch( $put );
 		$body     = $response->get_data();

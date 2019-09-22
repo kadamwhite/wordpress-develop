@@ -218,7 +218,7 @@ class WP_Test_REST_Post_Statuses_Controller extends WP_Test_REST_Controller_Test
 			),
 			array_keys( $links )
 		);
-		$this->assertEquals( $status_obj->date_floating, $data['date_floating']);
+		$this->assertEquals( $status_obj->date_floating, $data['date_floating'] );
 	}
 
 	protected function check_post_status_object_response( $response ) {

@@ -234,7 +234,7 @@ class WP_REST_Post_Statuses_Controller extends WP_REST_Controller {
 			$data['slug'] = $status->name;
 		}
 
-		if ( in_array('date_floating', $fields, true ) ) {
+		if ( in_array( 'date_floating', $fields, true ) ) {
 			$data['date_floating'] = $status->date_floating;
 		}
 
@@ -281,54 +281,54 @@ class WP_REST_Post_Statuses_Controller extends WP_REST_Controller {
 			'title'      => 'status',
 			'type'       => 'object',
 			'properties' => array(
-				'name'         => array(
+				'name'          => array(
 					'description' => __( 'The title for the status.' ),
 					'type'        => 'string',
 					'context'     => array( 'embed', 'view', 'edit' ),
 					'readonly'    => true,
 				),
-				'private'      => array(
+				'private'       => array(
 					'description' => __( 'Whether posts with this status should be private.' ),
 					'type'        => 'boolean',
 					'context'     => array( 'edit' ),
 					'readonly'    => true,
 				),
-				'protected'    => array(
+				'protected'     => array(
 					'description' => __( 'Whether posts with this status should be protected.' ),
 					'type'        => 'boolean',
 					'context'     => array( 'edit' ),
 					'readonly'    => true,
 				),
-				'public'       => array(
+				'public'        => array(
 					'description' => __( 'Whether posts of this status should be shown in the front end of the site.' ),
 					'type'        => 'boolean',
 					'context'     => array( 'view', 'edit' ),
 					'readonly'    => true,
 				),
-				'queryable'    => array(
+				'queryable'     => array(
 					'description' => __( 'Whether posts with this status should be publicly-queryable.' ),
 					'type'        => 'boolean',
 					'context'     => array( 'view', 'edit' ),
 					'readonly'    => true,
 				),
-				'show_in_list' => array(
+				'show_in_list'  => array(
 					'description' => __( 'Whether to include posts in the edit listing for their post type.' ),
 					'type'        => 'boolean',
 					'context'     => array( 'edit' ),
 					'readonly'    => true,
 				),
-				'slug'         => array(
+				'slug'          => array(
 					'description' => __( 'An alphanumeric identifier for the status.' ),
 					'type'        => 'string',
 					'context'     => array( 'embed', 'view', 'edit' ),
 					'readonly'    => true,
 				),
-				'date_floating'=> array(
+				'date_floating' => array(
 					'description' => __( 'Whether posts of this status may have floating published dates.' ),
 					'type'        => 'boolean',
 					'context'     => array( 'view', 'edit' ),
-					'readonly'    => true
-				)
+					'readonly'    => true,
+				),
 			),
 		);
 

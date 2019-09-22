@@ -337,11 +337,11 @@ function create_initial_post_types() {
 	register_post_status(
 		'draft',
 		array(
-			'label'       => _x( 'Draft', 'post status' ),
-			'protected'   => true,
-			'_builtin'    => true, /* internal use only. */
+			'label'         => _x( 'Draft', 'post status' ),
+			'protected'     => true,
+			'_builtin'      => true, /* internal use only. */
 			/* translators: %s: Number of draft posts. */
-			'label_count' => _n_noop(
+			'label_count'   => _n_noop(
 				'Draft <span class="count">(%s)</span>',
 				'Drafts <span class="count">(%s)</span>'
 			),
@@ -395,10 +395,10 @@ function create_initial_post_types() {
 	register_post_status(
 		'auto-draft',
 		array(
-			'label'    => 'auto-draft',
-			'internal' => true,
-			'_builtin' => true, /* internal use only. */
-			'date_floating' => true
+			'label'         => 'auto-draft',
+			'internal'      => true,
+			'_builtin'      => true, /* internal use only. */
+			'date_floating' => true,
 		)
 	);
 
