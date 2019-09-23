@@ -75,12 +75,12 @@ function add_metadata( $meta_type, $object_id, $meta_key, $meta_value, $unique =
 	}
 
 	if ( $unique && $wpdb->get_var(
-			$wpdb->prepare(
-				"SELECT COUNT(*) FROM $table WHERE meta_key = %s AND $column = %d",
-				$meta_key,
-				$object_id
-			)
-		) ) {
+		$wpdb->prepare(
+			"SELECT COUNT(*) FROM $table WHERE meta_key = %s AND $column = %d",
+			$meta_key,
+			$object_id
+		)
+	) ) {
 		return false;
 	}
 
@@ -206,9 +206,9 @@ function update_metadata( $meta_type, $object_id, $meta_key, $meta_value, $prev_
 
 	// Compare existing value to new value if no prev value given and the key exists only once.
 	if ( empty( $prev_value ) ) {
-		remove_filter( "default_{$meta_type}_metadata", "filter_default_metadata", 10, 5 );
+		remove_filter( "default_{$meta_type}_metadata", 'filter_default_metadata', 10, 5 );
 		$old_value = get_metadata( $meta_type, $object_id, $meta_key );
-		add_filter( "default_{$meta_type}_metadata", "filter_default_metadata", 10, 5 );
+		add_filter( "default_{$meta_type}_metadata", 'filter_default_metadata', 10, 5 );
 		if ( count( $old_value ) == 1 ) {
 			if ( $old_value[0] === $meta_value ) {
 				return false;
@@ -1192,7 +1192,6 @@ function register_meta( $object_type, $meta_key, $args, $deprecated = null ) {
 		'type'              => 'string',
 		'description'       => '',
 		'single'            => false,
-		'default'           => null,
 		'sanitize_callback' => null,
 		'auth_callback'     => null,
 		'show_in_rest'      => false,
@@ -1268,11 +1267,11 @@ function register_meta( $object_type, $meta_key, $args, $deprecated = null ) {
 	}
 
 	if ( false === $args['single'] && ! wp_is_numeric_array( $args['default'] ) ) {
-		$args['default'] = null;
+		unset( $args['default'] );
 	}
 
-	if ( null !== $args['default'] ) {
-		add_filter( "default_{$object_type}_metadata", "filter_default_metadata", 10, 5 );
+	if ( array_key_exists( 'default', $args ) ) {
+		add_filter( "default_{$object_type}_metadata", 'filter_default_metadata', 10, 5 );
 	}
 
 	// Global registry only contains meta keys registered with the array of arguments added in 4.6.0.

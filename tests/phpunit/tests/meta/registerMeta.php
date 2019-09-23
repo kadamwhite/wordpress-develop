@@ -95,7 +95,6 @@ class Tests_Meta_Register_Meta extends WP_UnitTestCase {
 						'description'       => '',
 						'single'            => false,
 						'sanitize_callback' => null,
-						'default'           => null,
 						'auth_callback'     => '__return_true',
 						'show_in_rest'      => false,
 					),
@@ -120,7 +119,6 @@ class Tests_Meta_Register_Meta extends WP_UnitTestCase {
 						'description'       => '',
 						'single'            => false,
 						'sanitize_callback' => null,
-						'default'           => null,
 						'auth_callback'     => '__return_true',
 						'show_in_rest'      => false,
 					),
@@ -174,7 +172,6 @@ class Tests_Meta_Register_Meta extends WP_UnitTestCase {
 						'type'              => 'string',
 						'description'       => '',
 						'single'            => false,
-						'default'           => null,
 						'sanitize_callback' => array( $this, '_new_sanitize_meta_cb' ),
 						'auth_callback'     => '__return_true',
 						'show_in_rest'      => false,
@@ -343,7 +340,6 @@ class Tests_Meta_Register_Meta extends WP_UnitTestCase {
 						'description'       => '',
 						'single'            => false,
 						'sanitize_callback' => null,
-						'default'           => null,
 						'auth_callback'     => '__return_true',
 						'show_in_rest'      => false,
 					),
@@ -397,7 +393,6 @@ class Tests_Meta_Register_Meta extends WP_UnitTestCase {
 						'description'       => '',
 						'single'            => false,
 						'sanitize_callback' => null,
-						'default'           => null,
 						'auth_callback'     => '__return_true',
 						'show_in_rest'      => false,
 					),
@@ -516,7 +511,7 @@ class Tests_Meta_Register_Meta extends WP_UnitTestCase {
 	public function test_get_default_value( $args, $single, $expected ) {
 
 		$object_type = 'post';
-		$meta_key =	'registered_key1';
+		$meta_key    = 'registered_key1';
 		register_meta(
 			$object_type,
 			$meta_key,
@@ -532,21 +527,21 @@ class Tests_Meta_Register_Meta extends WP_UnitTestCase {
 
 		// Set value to check default is not being returned by mistake.
 		$meta_value = 'dibble';
-		update_metadata( $object_type, $object_id, $meta_key, $meta_value);
+		update_metadata( $object_type, $object_id, $meta_key, $meta_value );
 		$value = get_metadata( $object_type, $object_id, $meta_key, true );
 		$this->assertSame( $value, $meta_value );
 
 		// Delete meta, make sure the default is returned.
-		delete_metadata( $object_type, $object_id, $meta_key);
+		delete_metadata( $object_type, $object_id, $meta_key );
 		$value = get_metadata( $object_type, $object_id, $meta_key, $single );
 		$this->assertSame( $value, $expected );
 
 		// Set other meta key, to make sure other keys are not effects.
 		$meta_value = 'hibble';
-		$meta_key = 'unregistered_key1';
-		$value = get_metadata( $object_type, $object_id, $meta_key, true );
+		$meta_key   = 'unregistered_key1';
+		$value      = get_metadata( $object_type, $object_id, $meta_key, true );
 		$this->assertSame( $value, '' );
-		update_metadata( $object_type, $object_id, $meta_key, $meta_value);
+		update_metadata( $object_type, $object_id, $meta_key, $meta_value );
 		$value = get_metadata( $object_type, $object_id, $meta_key, true );
 		$this->assertSame( $value, $meta_value );
 
@@ -563,84 +558,140 @@ class Tests_Meta_Register_Meta extends WP_UnitTestCase {
 	public function data_get_default_data() {
 		return array(
 			array(
-				array( 'single' => true, 'default' => 'wibble' ),
+				array(
+					'single'  => true,
+					'default' => 'wibble',
+				),
 				true,
-				'wibble'
+				'wibble',
 			),
 			array(
-				array( 'single' => true, 'default' => 'wibble' ),
+				array(
+					'single'  => true,
+					'default' => 'wibble',
+				),
 				false,
-				array( 'wibble' )
+				array( 'wibble' ),
 			),
 			array(
-				array( 'single' => true, 'default' => array( 'wibble' ) ),
+				array(
+					'single'  => true,
+					'default' => array( 'wibble' ),
+				),
 				true,
-				array( 'wibble' )
+				array( 'wibble' ),
 			),
 			array(
-				array( 'single' => true, 'default' => array( 'wibble' ) ),
+				array(
+					'single'  => true,
+					'default' => array( 'wibble' ),
+				),
 				false,
-				array( array( 'wibble' ) )
+				array( array( 'wibble' ) ),
 			),
 			array(
-				array( 'single' => false, 'default' => 'wibble' ),
+				array(
+					'single'  => false,
+					'default' => 'wibble',
+				),
 				true,
-				''
+				'',
 			),
 			array(
-				array( 'single' => false, 'default' => 'wibble' ),
+				array(
+					'single'  => false,
+					'default' => 'wibble',
+				),
 				false,
-				array()
+				array(),
 			),
 			array(
-				array( 'single' => false, 'default' => array( 'wibble' ) ),
+				array(
+					'single'  => false,
+					'default' => array( 'wibble' ),
+				),
 				true,
-				'wibble'
+				'wibble',
 			),
 			array(
-				array( 'single' => false, 'default' => array( 'wibble' ) ),
+				array(
+					'single'  => false,
+					'default' => array( 'wibble' ),
+				),
 				false,
-				array( 'wibble' )
+				array( 'wibble' ),
 			),
 			array(
-				array( 'single' => true, 'object_subtype'=> 'page', 'default' => 'wibble' ),
+				array(
+					'single'         => true,
+					'object_subtype' => 'page',
+					'default'        => 'wibble',
+				),
 				true,
-				'wibble'
+				'wibble',
 			),
 			array(
-				array( 'single' => true, 'object_subtype'=> 'page', 'default' => 'wibble' ),
+				array(
+					'single'         => true,
+					'object_subtype' => 'page',
+					'default'        => 'wibble',
+				),
 				false,
-				array( 'wibble' )
+				array( 'wibble' ),
 			),
 			array(
-				array( 'single' => true, 'object_subtype'=> 'page', 'default' => array( 'wibble' ) ),
+				array(
+					'single'         => true,
+					'object_subtype' => 'page',
+					'default'        => array( 'wibble' ),
+				),
 				true,
-				array( 'wibble' )
+				array( 'wibble' ),
 			),
 			array(
-				array( 'single' => true, 'object_subtype'=> 'page', 'default' => array( 'wibble' ) ),
+				array(
+					'single'         => true,
+					'object_subtype' => 'page',
+					'default'        => array( 'wibble' ),
+				),
 				false,
-				array( array( 'wibble' ) )
+				array( array( 'wibble' ) ),
 			),
 			array(
-				array( 'single' => true, 'object_subtype'=> 'post', 'default' => 'wibble' ),
+				array(
+					'single'         => true,
+					'object_subtype' => 'post',
+					'default'        => 'wibble',
+				),
 				true,
-				''
+				'',
 			),
 			array(
-				array( 'single' => true, 'object_subtype'=> 'post', 'default' => 'wibble' ),
+				array(
+					'single'         => true,
+					'object_subtype' => 'post',
+					'default'        => 'wibble',
+				),
 				false,
-				array()
+				array(),
 			),
 			array(
-				array( 'single' => true, 'object_subtype'=> 'post', 'default' => array( 'wibble' ) ),
+				array(
+					'single'         => true,
+					'object_subtype' => 'post',
+					'default'        => array( 'wibble' ),
+				),
 				true,
-				''
+				'',
 			),
 			array(
-				array( 'single' => true, 'object_subtype'=> 'post', 'default' => array( 'wibble' ) ),
+				array(
+					'single'         => true,
+					'object_subtype' => 'post',
+					'default'        => array( 'wibble' ),
+				),
 				false,
-				array()
+				array(),
 			),
 		);
 	}
