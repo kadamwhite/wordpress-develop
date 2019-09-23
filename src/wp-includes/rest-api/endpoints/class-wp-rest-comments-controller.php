@@ -1592,8 +1592,15 @@ class WP_REST_Comments_Controller extends WP_REST_Controller {
 	 * @return bool Whether post can be read.
 	 */
 	protected function check_read_post_permission( $post, $request ) {
-		$posts_controller = new WP_REST_Posts_Controller( $post->post_type );
-		$post_type        = get_post_type_object( $post->post_type );
+		$posts_controller = WP_REST_Posts_Controller::get_for_post_type( $post->post_type );
+
+		// We need to specifically assert that the posts controller is a WP_REST_Posts_Controller instance,
+		// and not just check that we have a valid controller as we use Posts Controller specific methods.
+		if ( ! $posts_controller instanceof WP_REST_Posts_Controller ) {
+			$posts_controller = new WP_REST_Posts_Controller( $post->post_type );
+		}
+
+		$post_type = get_post_type_object( $post->post_type );
 
 		$has_password_filter = false;
 

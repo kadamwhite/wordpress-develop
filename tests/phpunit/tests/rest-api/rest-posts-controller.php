@@ -4526,6 +4526,94 @@ class WP_Test_REST_Posts_Controller extends WP_Test_REST_Post_Type_Controller_Te
 		$this->assertNotEquals( '0000-00-00 00:00:00', get_post( $post->ID )->post_date_gmt );
 	}
 
+	/**
+	 * @ticket 45677
+	 */
+	public function test_get_for_post_type_reuses_same_instance() {
+		$this->assertSame(
+			WP_REST_Posts_Controller::get_for_post_type( 'post' ),
+			WP_REST_Posts_Controller::get_for_post_type( 'post' )
+		);
+	}
+
+	/**
+	 * @ticket 45677
+	 */
+	public function test_get_for_post_type_returns_null_for_non_existent_post_type() {
+		$this->assertNull( WP_REST_Posts_Controller::get_for_post_type( 'doesnotexist' ) );
+	}
+
+	/**
+	 * @ticket 45677
+	 */
+	public function test_get_for_post_type_returns_null_if_post_type_does_not_show_in_rest() {
+		register_post_type(
+			'not_in_rest',
+			array(
+				'show_in_rest' => false,
+			)
+		);
+
+		$this->assertNull( WP_REST_Posts_Controller::get_for_post_type( 'not_in_rest' ) );
+	}
+
+	/**
+	 * @ticket 45677
+	 */
+	public function test_get_for_post_type_returns_null_if_class_does_not_exist() {
+		register_post_type(
+			'class_not_found',
+			array(
+				'show_in_rest'          => true,
+				'rest_controller_class' => 'Class_That_Does_Not_Exist',
+			)
+		);
+
+		$this->assertNull( WP_REST_Posts_Controller::get_for_post_type( 'class_not_found' ) );
+	}
+
+	/**
+	 * @ticket 45677
+	 */
+	public function test_get_for_post_type_returns_null_if_class_does_not_subclass_rest_controller() {
+		register_post_type(
+			'invalid_class',
+			array(
+				'show_in_rest'          => true,
+				'rest_controller_class' => 'WP_Post',
+			),
+		);
+
+		$this->assertNull( WP_REST_Posts_Controller::get_for_post_type( 'invalid_class' ) );
+	}
+
+	/**
+	 * @ticket 45677
+	 */
+	public function test_get_for_post_type_returns_posts_controller_if_custom_class_not_specified() {
+		register_post_type(
+			'test',
+			array(
+				'show_in_rest' => true,
+			)
+		);
+
+		$this->assertInstanceOf(
+			WP_REST_Posts_Controller::class,
+			WP_REST_Posts_Controller::get_for_post_type( 'test' )
+		);
+	}
+
+	/**
+	 * @ticket 45677
+	 */
+	public function test_get_for_post_type_returns_provided_controller_class() {
+		$this->assertInstanceOf(
+			WP_REST_Blocks_Controller::class,
+			WP_REST_Posts_Controller::get_for_post_type( 'wp_block' )
+		);
+	}
+
 	public function tearDown() {
 		_unregister_post_type( 'private-post' );
 		_unregister_post_type( 'youseeme' );
