@@ -4531,16 +4531,9 @@ class WP_Test_REST_Posts_Controller extends WP_Test_REST_Post_Type_Controller_Te
 	 */
 	public function test_get_for_post_type_reuses_same_instance() {
 		$this->assertSame(
-			WP_REST_Posts_Controller::get_for_post_type( 'post' ),
-			WP_REST_Posts_Controller::get_for_post_type( 'post' )
+			get_post_type_object( 'post' )->get_rest_controller(),
+			get_post_type_object( 'post' )->get_rest_controller()
 		);
-	}
-
-	/**
-	 * @ticket 45677
-	 */
-	public function test_get_for_post_type_returns_null_for_non_existent_post_type() {
-		$this->assertNull( WP_REST_Posts_Controller::get_for_post_type( 'doesnotexist' ) );
 	}
 
 	/**
@@ -4554,7 +4547,7 @@ class WP_Test_REST_Posts_Controller extends WP_Test_REST_Post_Type_Controller_Te
 			)
 		);
 
-		$this->assertNull( WP_REST_Posts_Controller::get_for_post_type( 'not_in_rest' ) );
+		$this->assertNull( get_post_type_object( 'not_in_rest' )->get_rest_controller() );
 	}
 
 	/**
@@ -4569,7 +4562,7 @@ class WP_Test_REST_Posts_Controller extends WP_Test_REST_Post_Type_Controller_Te
 			)
 		);
 
-		$this->assertNull( WP_REST_Posts_Controller::get_for_post_type( 'class_not_found' ) );
+		$this->assertNull( get_post_type_object( 'class_not_found' )->get_rest_controller() );
 	}
 
 	/**
@@ -4584,7 +4577,7 @@ class WP_Test_REST_Posts_Controller extends WP_Test_REST_Post_Type_Controller_Te
 			),
 		);
 
-		$this->assertNull( WP_REST_Posts_Controller::get_for_post_type( 'invalid_class' ) );
+		$this->assertNull( get_post_type_object( 'invalid_class' )->get_rest_controller() );
 	}
 
 	/**
@@ -4600,7 +4593,7 @@ class WP_Test_REST_Posts_Controller extends WP_Test_REST_Post_Type_Controller_Te
 
 		$this->assertInstanceOf(
 			WP_REST_Posts_Controller::class,
-			WP_REST_Posts_Controller::get_for_post_type( 'test' )
+			get_post_type_object( 'test' )->get_rest_controller()
 		);
 	}
 
@@ -4610,7 +4603,7 @@ class WP_Test_REST_Posts_Controller extends WP_Test_REST_Post_Type_Controller_Te
 	public function test_get_for_post_type_returns_provided_controller_class() {
 		$this->assertInstanceOf(
 			WP_REST_Blocks_Controller::class,
-			WP_REST_Posts_Controller::get_for_post_type( 'wp_block' )
+			get_post_type_object( 'wp_block' )->get_rest_controller()
 		);
 	}
 

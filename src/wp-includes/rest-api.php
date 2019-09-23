@@ -191,8 +191,8 @@ function rest_api_default_filters() {
  * @since 4.7.0
  */
 function create_initial_rest_routes() {
-	foreach ( get_post_types( array( 'show_in_rest' => true ) ) as $post_type ) {
-		$controller = WP_REST_Posts_Controller::get_for_post_type( $post_type );
+	foreach ( get_post_types( array( 'show_in_rest' => true ), 'objects' ) as $post_type ) {
+		$controller = $post_type->get_rest_controller();
 
 		if ( ! $controller ) {
 			continue;
@@ -200,13 +200,13 @@ function create_initial_rest_routes() {
 
 		$controller->register_routes();
 
-		if ( post_type_supports( $post_type, 'revisions' ) ) {
-			$revisions_controller = new WP_REST_Revisions_Controller( $post_type );
+		if ( post_type_supports( $post_type->name, 'revisions' ) ) {
+			$revisions_controller = new WP_REST_Revisions_Controller( $post_type->name );
 			$revisions_controller->register_routes();
 		}
 
-		if ( 'attachment' !== $post_type ) {
-			$autosaves_controller = new WP_REST_Autosaves_Controller( $post_type );
+		if ( 'attachment' !== $post_type->name ) {
+			$autosaves_controller = new WP_REST_Autosaves_Controller( $post_type->name );
 			$autosaves_controller->register_routes();
 		}
 	}

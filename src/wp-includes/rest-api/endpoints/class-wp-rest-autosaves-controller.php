@@ -57,14 +57,14 @@ class WP_REST_Autosaves_Controller extends WP_REST_Revisions_Controller {
 	 * @param string $parent_post_type Post type of the parent.
 	 */
 	public function __construct( $parent_post_type ) {
-		$parent_controller = WP_REST_Posts_Controller::get_for_post_type( $parent_post_type );
+		$this->parent_post_type = $parent_post_type;
+		$post_type_object       = get_post_type_object( $parent_post_type );
+		$parent_controller      = $post_type_object->get_rest_controller();
 
 		if ( ! $parent_controller ) {
 			$parent_controller = new WP_REST_Posts_Controller( $parent_post_type );
 		}
 
-		$this->parent_post_type     = $parent_post_type;
-		$post_type_object           = get_post_type_object( $parent_post_type );
 		$this->parent_controller    = $parent_controller;
 		$this->revisions_controller = new WP_REST_Revisions_Controller( $parent_post_type );
 		$this->rest_namespace       = 'wp/v2';

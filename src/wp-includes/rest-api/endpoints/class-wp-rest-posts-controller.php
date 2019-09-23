@@ -57,47 +57,6 @@ class WP_REST_Posts_Controller extends WP_REST_Controller {
 	}
 
 	/**
-	 * Gets the REST API controller for a post type.
-	 *
-	 * @since 5.3.0
-	 *
-	 * @param string $post_type
-	 * @return WP_REST_Controller|null The controller instance, or null if the specified is invalid or the post type
-	 *                                 is set not to show in rest.
-	 */
-	public static function get_for_post_type( $post_type ) {
-		if ( array_key_exists( $post_type, self::$post_type_controllers ) ) {
-			return self::$post_type_controllers[ $post_type ];
-		}
-
-		$definition = get_post_type_object( $post_type );
-
-		if ( ! $definition || ! $definition->show_in_rest ) {
-			self::$post_type_controllers[ $post_type ] = null;
-
-			return self::$post_type_controllers[ $post_type ];
-		}
-
-		$class = $definition->rest_controller_class ? $definition->rest_controller_class : WP_REST_Posts_Controller::class;
-
-		if ( ! class_exists( $class ) ) {
-			self::$post_type_controllers[ $post_type ] = null;
-
-			return self::$post_type_controllers[ $post_type ];
-		}
-
-		if ( ! is_subclass_of( $class, WP_REST_Controller::class ) ) {
-			self::$post_type_controllers[ $post_type ] = null;
-
-			return self::$post_type_controllers[ $post_type ];
-		}
-
-		self::$post_type_controllers[ $post_type ] = new $class( $post_type );
-
-		return self::$post_type_controllers[ $post_type ];
-	}
-
-	/**
 	 * Registers the routes for the objects of the controller.
 	 *
 	 * @since 4.7.0
