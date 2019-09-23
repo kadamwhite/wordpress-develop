@@ -1039,8 +1039,8 @@ class WP_REST_Posts_Controller extends WP_REST_Controller {
 		// Sending a null date or date_gmt value resets date and date_gmt to their
 		// default values (`0000-00-00 00:00:00`).
 		if (
-			( $request->has_param( 'date_gmt' ) && null === $request['date_gmt'] ) ||
-			( $request->has_param( 'date' ) && null === $request['date'] )
+			( ! empty( $schema['properties']['date_gmt'] ) && $request->has_param( 'date_gmt' ) && null === $request['date_gmt'] ) ||
+			( ! empty( $schema['properties']['date'] ) && $request->has_param( 'date' ) && null === $request['date'] )
 		) {
 			$prepared_post->post_date_gmt = null;
 			$prepared_post->post_date     = null;
