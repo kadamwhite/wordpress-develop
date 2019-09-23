@@ -75,12 +75,12 @@ function add_metadata( $meta_type, $object_id, $meta_key, $meta_value, $unique =
 	}
 
 	if ( $unique && $wpdb->get_var(
-		$wpdb->prepare(
-			"SELECT COUNT(*) FROM $table WHERE meta_key = %s AND $column = %d",
-			$meta_key,
-			$object_id
-		)
-	) ) {
+			$wpdb->prepare(
+				"SELECT COUNT(*) FROM $table WHERE meta_key = %s AND $column = %d",
+				$meta_key,
+				$object_id
+			)
+		) ) {
 		return false;
 	}
 
@@ -206,7 +206,9 @@ function update_metadata( $meta_type, $object_id, $meta_key, $meta_value, $prev_
 
 	// Compare existing value to new value if no prev value given and the key exists only once.
 	if ( empty( $prev_value ) ) {
+		remove_filter( "default_{$meta_type}_metadata", "filter_default_metadata", 10, 5 );
 		$old_value = get_metadata( $meta_type, $object_id, $meta_key );
+		add_filter( "default_{$meta_type}_metadata", "filter_default_metadata", 10, 5 );
 		if ( count( $old_value ) == 1 ) {
 			if ( $old_value[0] === $meta_value ) {
 				return false;
@@ -548,7 +550,7 @@ function get_metadata( $meta_type, $object_id, $meta_key = '', $single = false )
 /**
  * Retrieve metadata data default for the specified object.
  *
- * @since 5.2.0
+ * @since 5.3.0
  *
  * @param string $meta_type Type of object metadata is for (e.g., comment, post, term, or user).
  * @param string $meta_key  Optional. Metadata key. If not specified, retrieve all metadata for
@@ -568,8 +570,9 @@ function get_metadata_default( $meta_type, $meta_key, $single = false, $object_i
 	}
 
 	/**
+	 * Filter the default value a specified object.
 	 *
-	 * @since 5.2.0
+	 * @since 5.3.0
 	 *
 	 * @param array|string      $value     The value should return - a single metadata value,
 	 *                                     or an array of values.
@@ -1502,14 +1505,21 @@ function get_object_subtype( $object_type, $object_id ) {
 }
 
 /**
+ * Filter into default_{$object_type}_metadata and add in default value.
  *
- * @param $value
- * @param $meta_type
- * @param $meta_key
- * @param $single
- * @param $object_id
+ * @since 5.3.0
  *
- * @return mixed
+ * @param mixed  $value     Current value passed to filter.
+ * @param string $meta_type Type of object metadata is for (e.g., comment, post, term, or user).
+
+ * @param string $meta_key  Optional. Metadata key. If not specified, retrieve all metadata for
+ *                          the specified object.
+ * @param bool   $single    Optional, default is false.
+ *                          If true, return only the first value of the specified meta_key.
+ *                          This parameter has no effect if meta_key is not specified.
+ * @param int    $object_id ID of the object metadata is for
+ *
+ * @return mixed Single metadata default, or array of defaults
  */
 function filter_default_metadata( $value, $meta_type, $meta_key, $single, $object_id ) {
 	$metadata = get_registered_meta_keys( $meta_type );
@@ -1521,18 +1531,14 @@ function filter_default_metadata( $value, $meta_type, $meta_key, $single, $objec
 		}
 	}
 
-	if ( $metadata[ $meta_key ]['single'] ) {
-		if ( $single ) {
+	if ( $single ) {
+		if ( $metadata[ $meta_key ]['single'] ) {
 			$value = $metadata[ $meta_key ]['default'];
 		} else {
-			$value = array( $metadata[ $meta_key ]['default'] );
+			$value = $metadata[ $meta_key ]['default'][0];
 		}
 	} else {
-		if ( $single ) {
-			$value = $metadata[ $meta_key ]['default'][0];
-		} else {
-			$value = $metadata[ $meta_key ]['default'];
-		}
+		$value = $metadata[ $meta_key ]['default'];
 	}
 
 	return $value;
