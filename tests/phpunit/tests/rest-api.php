@@ -561,6 +561,53 @@ class Tests_REST_API extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Ensure that specifying two sibling properties in _fields causes both to be included.
+	 *
+	 * @ticket 42094
+	 */
+	public function test_rest_filter_response_fields_include_all_specified_siblings() {
+		$response = new WP_REST_Response();
+
+		$response->set_data(
+			array(
+				'a' => 0,
+				'b' => array(
+					'1' => 1,
+					'2' => array (
+						'aa' => 1,
+						'bb' => 2,
+					),
+				),
+				'c' => 3,
+				'd' => array(
+					'4' => 4,
+					'5' => 5,
+				),
+			)
+		);
+		$request = array(
+			'_fields' => 'b.2.bb,b.2.aa,d.4,d.5',
+		);
+
+		$response = rest_filter_response_fields( $response, null, $request );
+		$this->assertEquals(
+			array(
+				'b' => array(
+					'2' => array (
+						'aa' => 1,
+						'bb' => 2,
+					),
+				),
+				'd' => array(
+					'4' => 4,
+					'5' => 5,
+				),
+			),
+			$response->get_data()
+		);
+	}
+
+	/**
 	 * @ticket 42094
 	 */
 	public function test_rest_is_field_included() {
