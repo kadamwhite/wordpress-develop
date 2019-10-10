@@ -593,7 +593,7 @@ class Tests_REST_API extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Ensure that specifying a single top-level key in _fields includes that field and all children.
+	 * Ensure that a top-level key in _fields supersedes any specified children of that field.
 	 *
 	 * @ticket 48266
 	 */
