@@ -743,7 +743,7 @@ function rest_filter_response_fields( $response, $server, $request ) {
 		$parts = explode( '.', $field );
 		$ref   = &$fields_as_keyed;
 		while ( count( $parts ) > 1 ) {
-			$next         = array_shift( $parts );
+			$next = array_shift( $parts );
 			if ( isset( $ref[ $next ] ) && true === $ref[ $next ] ) {
 				// Skip any sub-properties if their parent prop is already marked for inclusion.
 				break 2;
