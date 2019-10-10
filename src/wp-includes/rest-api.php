@@ -744,11 +744,15 @@ function rest_filter_response_fields( $response, $server, $request ) {
 		$ref   = &$fields_as_keyed;
 		while ( count( $parts ) > 1 ) {
 			$next         = array_shift( $parts );
+			if ( isset( $ref[ $next ] ) && true === $ref[ $next ] ) {
+				// Skip any sub-properties if their parent prop is already marked for inclusion.
+				break 2;
+			}
 			$ref[ $next ] = isset( $ref[ $next ] ) ? $ref[ $next ] : array();
 			$ref          = &$ref[ $next ];
 		}
 		$last         = array_shift( $parts );
-		$ref[ $last ] = array();
+		$ref[ $last ] = true;
 	}
 
 	if ( wp_is_numeric_array( $data ) ) {
