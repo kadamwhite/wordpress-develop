@@ -742,22 +742,22 @@ class Tests_REST_Server extends WP_Test_REST_TestCase {
 		$response = new WP_REST_Response(
 			array(
 				array(
-					'id' => 1,
+					'id'     => 1,
 					'_links' => array(
 						'author' => array(
 							array(
-								'href' => rest_url( 'wp/v2/users/1' ),
+								'href'       => rest_url( 'wp/v2/users/1' ),
 								'embeddable' => true,
 							),
 						),
 					),
 				),
 				array(
-					'id' => 2,
+					'id'     => 2,
 					'_links' => array(
 						'author' => array(
 							array(
-								'href' => rest_url( 'wp/v2/users/1' ),
+								'href'       => rest_url( 'wp/v2/users/1' ),
 								'embeddable' => true,
 							),
 						),
