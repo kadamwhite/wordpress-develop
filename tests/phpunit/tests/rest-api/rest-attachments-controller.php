@@ -1740,6 +1740,35 @@ class WP_Test_REST_Attachments_Controller extends WP_Test_REST_Post_Type_Control
 		$this->assertSame( 1, self::$rest_after_insert_attachment_count );
 	}
 
+	/**
+	 * @ticket 44567
+	 */
+	public function test_create_item_with_meta_values() {
+		register_post_meta(
+			'attachment',
+			'canola_status',
+			array(
+				'type'         => 'string',
+				'single'       => true,
+				'show_in_rest' => true,
+			)
+		);
+
+		wp_set_current_user( self::$author_id );
+
+		$request = new WP_REST_Request( 'POST', '/wp/v2/media' );
+		$request->set_header( 'Content-Type', 'image/jpeg' );
+		$request->set_header( 'Content-Disposition', 'attachment; filename=canola.jpg' );
+		$request->set_param( 'meta', array( 'canola_status' => 'Canola is awesome' ) );
+
+		$request->set_body( file_get_contents( $this->test_file ) );
+		$response = rest_get_server()->dispatch( $request );
+		$data     = $response->get_data();
+
+		$this->assertEquals( 201, $response->get_status() );
+		$this->assertEquals( 'Canola is awesome', get_post_meta( $response->get_data()['id'], 'canola_status', true ) );
+	}
+
 	public function filter_rest_insert_attachment( $attachment ) {
 		self::$rest_insert_attachment_count++;
 	}
