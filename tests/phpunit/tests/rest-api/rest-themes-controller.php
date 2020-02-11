@@ -392,7 +392,7 @@ class WP_Test_REST_Themes_Controller extends WP_Test_REST_Controller_Testcase {
 	public function test_theme_supports_custom_header() {
 		remove_theme_support( 'custom-header' );
 		$wordpress_header = array(
-			'default-image'          => 'https://s.w.org/style/images/wporg-logo.svg',
+			'default-image'          => '',
 			'random-default'         => false,
 			'width'                  => 0,
 			'height'                 => 0,
