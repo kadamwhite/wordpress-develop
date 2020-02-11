@@ -188,27 +188,28 @@ class WP_Test_REST_Themes_Controller extends WP_Test_REST_Controller_Testcase {
 		$properties = $data['schema']['properties'];
 		$this->assertEquals( 1, count( $properties ) );
 		$this->assertArrayHasKey( 'theme_supports', $properties );
-		$this->assertEquals( 20, count( $properties['theme_supports']['properties'] ) );
-		$this->assertArrayHasKey( 'align-wide', $properties['theme_supports']['properties'] );
-		$this->assertArrayHasKey( 'automatic-feed-links', $properties['theme_supports']['properties'] );
-		$this->assertArrayHasKey( 'custom-header', $properties['theme_supports']['properties'] );
-		$this->assertArrayHasKey( 'custom-background', $properties['theme_supports']['properties'] );
-		$this->assertArrayHasKey( 'custom-logo', $properties['theme_supports']['properties'] );
-		$this->assertArrayHasKey( 'customize-selective-refresh-widgets', $properties['theme_supports']['properties'] );
-		$this->assertArrayHasKey( 'title-tag', $properties['theme_supports']['properties'] );
-		$this->assertArrayHasKey( 'dark-editor-style', $properties['theme_supports']['properties'] );
-		$this->assertArrayHasKey( 'disable-custom-font-sizes', $properties['theme_supports']['properties'] );
-		$this->assertArrayHasKey( 'disable-custom-gradients', $properties['theme_supports']['properties'] );
-		$this->assertArrayHasKey( 'editor-color-palette', $properties['theme_supports']['properties'] );
-		$this->assertArrayHasKey( 'editor-font-sizes', $properties['theme_supports']['properties'] );
-		$this->assertArrayHasKey( 'editor-gradient-presets', $properties['theme_supports']['properties'] );
-		$this->assertArrayHasKey( 'editor-styles', $properties['theme_supports']['properties'] );
-		$this->assertArrayHasKey( 'formats', $properties['theme_supports']['properties'] );
-		$this->assertArrayHasKey( 'html5', $properties['theme_supports']['properties'] );
-		$this->assertArrayHasKey( 'post-thumbnails', $properties['theme_supports']['properties'] );
-		$this->assertArrayHasKey( 'responsive-embeds', $properties['theme_supports']['properties'] );
-		$this->assertArrayHasKey( 'title-tag', $properties['theme_supports']['properties'] );
-		$this->assertArrayHasKey( 'wp-block-styles', $properties['theme_supports']['properties'] );
+		$theme_supports = $properties['theme_supports']['properties'];
+		$this->assertEquals( 20, count( $theme_supports ) );
+		$this->assertArrayHasKey( 'align-wide', $theme_supports );
+		$this->assertArrayHasKey( 'automatic-feed-links', $theme_supports );
+		$this->assertArrayHasKey( 'custom-header', $theme_supports );
+		$this->assertArrayHasKey( 'custom-background', $theme_supports );
+		$this->assertArrayHasKey( 'custom-logo', $theme_supports );
+		$this->assertArrayHasKey( 'customize-selective-refresh-widgets', $theme_supports );
+		$this->assertArrayHasKey( 'title-tag', $theme_supports );
+		$this->assertArrayHasKey( 'dark-editor-style', $theme_supports );
+		$this->assertArrayHasKey( 'disable-custom-font-sizes', $theme_supports );
+		$this->assertArrayHasKey( 'disable-custom-gradients', $theme_supports );
+		$this->assertArrayHasKey( 'editor-color-palette', $theme_supports );
+		$this->assertArrayHasKey( 'editor-font-sizes', $theme_supports );
+		$this->assertArrayHasKey( 'editor-gradient-presets', $theme_supports );
+		$this->assertArrayHasKey( 'editor-styles', $theme_supports );
+		$this->assertArrayHasKey( 'formats', $theme_supports );
+		$this->assertArrayHasKey( 'html5', $theme_supports );
+		$this->assertArrayHasKey( 'post-thumbnails', $theme_supports );
+		$this->assertArrayHasKey( 'responsive-embeds', $theme_supports );
+		$this->assertArrayHasKey( 'title-tag', $theme_supports );
+		$this->assertArrayHasKey( 'wp-block-styles', $theme_supports );
 	}
 
 	/**
@@ -218,8 +219,8 @@ class WP_Test_REST_Themes_Controller extends WP_Test_REST_Controller_Testcase {
 		remove_theme_support( 'disable-custom-colors' );
 		$response = self::perform_active_theme_request();
 		$result   = $response->get_data();
-		$this->assertTrue( isset( $result[0]['theme_supports'] ) );
-		$this->assertTrue( isset( $result[0]['theme_supports']['disable-custom-colors'] ) );
+		$this->assertArrayHasKey( 'theme_supports', $result[0] );
+		$this->assertArrayHasKey( 'disable-custom-colors', $result[0]['theme_supports'] );
 		$this->assertFalse( $result[0]['theme_supports']['disable-custom-colors'] );
 	}
 
@@ -231,7 +232,7 @@ class WP_Test_REST_Themes_Controller extends WP_Test_REST_Controller_Testcase {
 		add_theme_support( 'disable-custom-colors' );
 		$response = self::perform_active_theme_request();
 		$result   = $response->get_data();
-		$this->assertTrue( isset( $result[0]['theme_supports'] ) );
+		$this->assertArrayHasKey( 'theme_supports', $result[0] );
 		$this->assertTrue( $result[0]['theme_supports']['disable-custom-colors'] );
 	}
 
@@ -242,8 +243,8 @@ class WP_Test_REST_Themes_Controller extends WP_Test_REST_Controller_Testcase {
 		remove_theme_support( 'disable-custom-font-sizes' );
 		$response = self::perform_active_theme_request();
 		$result   = $response->get_data();
-		$this->assertTrue( isset( $result[0]['theme_supports'] ) );
-		$this->assertTrue( isset( $result[0]['theme_supports']['disable-custom-font-sizes'] ) );
+		$this->assertArrayHasKey( 'theme_supports', $result[0] );
+		$this->assertArrayHasKey( 'disable-custom-font-sizes', $result[0]['theme_supports'] );
 		$this->assertFalse( $result[0]['theme_supports']['disable-custom-font-sizes'] );
 	}
 
@@ -255,7 +256,7 @@ class WP_Test_REST_Themes_Controller extends WP_Test_REST_Controller_Testcase {
 		add_theme_support( 'disable-custom-font-sizes' );
 		$response = self::perform_active_theme_request();
 		$result   = $response->get_data();
-		$this->assertTrue( isset( $result[0]['theme_supports'] ) );
+		$this->assertArrayHasKey( 'theme_supports', $result[0] );
 		$this->assertTrue( $result[0]['theme_supports']['disable-custom-font-sizes'] );
 	}
 
@@ -266,8 +267,8 @@ class WP_Test_REST_Themes_Controller extends WP_Test_REST_Controller_Testcase {
 		remove_theme_support( 'editor-font-sizes' );
 		$response = self::perform_active_theme_request();
 		$result   = $response->get_data();
-		$this->assertTrue( isset( $result[0]['theme_supports'] ) );
-		$this->assertTrue( isset( $result[0]['theme_supports']['editor-font-sizes'] ) );
+		$this->assertArrayHasKey( 'theme_supports', $result[0] );
+		$this->assertArrayHasKey( 'editor-font-sizes', $result[0]['theme_supports'] );
 		$this->assertFalse( $result[0]['theme_supports']['editor-font-sizes'] );
 	}
 
@@ -284,8 +285,8 @@ class WP_Test_REST_Themes_Controller extends WP_Test_REST_Controller_Testcase {
 		add_theme_support( 'editor-font-sizes', array( $tiny ) );
 		$response = self::perform_active_theme_request();
 		$result   = $response->get_data();
-		$this->assertTrue( isset( $result[0]['theme_supports'] ) );
-		$this->assertTrue( isset( $result[0]['theme_supports']['editor-font-sizes'] ) );
+		$this->assertArrayHasKey( 'theme_supports', $result[0] );
+		$this->assertArrayHasKey( 'editor-font-sizes', $result[0]['theme_supports'] );
 		$this->assertEquals( array( $tiny ), $result[0]['theme_supports']['editor-font-sizes'] );
 	}
 
@@ -296,8 +297,8 @@ class WP_Test_REST_Themes_Controller extends WP_Test_REST_Controller_Testcase {
 		remove_theme_support( 'editor-color-palette' );
 		$response = self::perform_active_theme_request();
 		$result   = $response->get_data();
-		$this->assertTrue( isset( $result[0]['theme_supports'] ) );
-		$this->assertTrue( isset( $result[0]['theme_supports']['editor-color-palette'] ) );
+		$this->assertArrayHasKey( 'theme_supports', $result[0] );
+		$this->assertArrayHasKey( 'editor-color-palette', $result[0]['theme_supports'] );
 		$this->assertFalse( $result[0]['theme_supports']['editor-color-palette'] );
 	}
 
@@ -314,7 +315,7 @@ class WP_Test_REST_Themes_Controller extends WP_Test_REST_Controller_Testcase {
 		add_theme_support( 'editor-color-palette', array( $wordpress_blue ) );
 		$response = self::perform_active_theme_request();
 		$result   = $response->get_data();
-		$this->assertTrue( isset( $result[0]['theme_supports'] ) );
+		$this->assertArrayHasKey( 'theme_supports', $result[0] );
 		$this->assertEquals( array( $wordpress_blue ), $result[0]['theme_supports']['editor-color-palette'] );
 	}
 
@@ -326,7 +327,7 @@ class WP_Test_REST_Themes_Controller extends WP_Test_REST_Controller_Testcase {
 		add_theme_support( 'automatic-feed-links' );
 		$response = self::perform_active_theme_request();
 		$result   = $response->get_data();
-		$this->assertTrue( isset( $result[0]['theme_supports'] ) );
+		$this->assertArrayHasKey( 'theme_supports', $result[0] );
 		$this->assertTrue( $result[0]['theme_supports']['automatic-feed-links'] );
 	}
 
@@ -337,8 +338,8 @@ class WP_Test_REST_Themes_Controller extends WP_Test_REST_Controller_Testcase {
 		remove_theme_support( 'automatic-feed-links' );
 		$response = self::perform_active_theme_request();
 		$result   = $response->get_data();
-		$this->assertTrue( isset( $result[0]['theme_supports'] ) );
-		$this->assertTrue( isset( $result[0]['theme_supports']['automatic-feed-links'] ) );
+		$this->assertArrayHasKey( 'theme_supports', $result[0] );
+		$this->assertArrayHasKey( 'automatic-feed-links', $result[0]['theme_supports'] );
 		$this->assertFalse( $result[0]['theme_supports']['automatic-feed-links'] );
 	}
 
@@ -349,8 +350,8 @@ class WP_Test_REST_Themes_Controller extends WP_Test_REST_Controller_Testcase {
 		remove_theme_support( 'custom-logo' );
 		$response = self::perform_active_theme_request();
 		$result   = $response->get_data();
-		$this->assertTrue( isset( $result[0]['theme_supports'] ) );
-		$this->assertTrue( isset( $result[0]['theme_supports']['custom-logo'] ) );
+		$this->assertArrayHasKey( 'theme_supports', $result[0] );
+		$this->assertArrayHasKey( 'custom-logo', $result[0]['theme_supports'] );
 		$this->assertFalse( $result[0]['theme_supports']['custom-logo'] );
 	}
 
@@ -369,7 +370,7 @@ class WP_Test_REST_Themes_Controller extends WP_Test_REST_Controller_Testcase {
 		add_theme_support( 'custom-logo', $wordpress_logo );
 		$response = self::perform_active_theme_request();
 		$result   = $response->get_data();
-		$this->assertTrue( isset( $result[0]['theme_supports'] ) );
+		$this->assertArrayHasKey( 'theme_supports', $result[0] );
 		$this->assertEquals( $wordpress_logo, $result[0]['theme_supports']['custom-logo'] );
 	}
 
@@ -380,8 +381,8 @@ class WP_Test_REST_Themes_Controller extends WP_Test_REST_Controller_Testcase {
 		remove_theme_support( 'custom-header' );
 		$response = self::perform_active_theme_request();
 		$result   = $response->get_data();
-		$this->assertTrue( isset( $result[0]['theme_supports'] ) );
-		$this->assertTrue( isset( $result[0]['theme_supports']['custom-header'] ) );
+		$this->assertArrayHasKey( 'theme_supports', $result[0] );
+		$this->assertArrayHasKey( 'custom-header', $result[0]['theme_supports'] );
 		$this->assertFalse( $result[0]['theme_supports']['custom-header'] );
 	}
 
@@ -415,7 +416,7 @@ class WP_Test_REST_Themes_Controller extends WP_Test_REST_Controller_Testcase {
 		add_theme_support( 'custom-header', $wordpress_header );
 		$response = self::perform_active_theme_request();
 		$result   = $response->get_data();
-		$this->assertTrue( isset( $result[0]['theme_supports'] ) );
+		$this->assertArrayHasKey( 'theme_supports', $result[0] );
 
 		$expected = array_diff_key( $wordpress_header, array_flip( $excluded ) );
 		$this->assertEquals( $expected, $result[0]['theme_supports']['custom-header'] );
@@ -428,8 +429,8 @@ class WP_Test_REST_Themes_Controller extends WP_Test_REST_Controller_Testcase {
 		remove_theme_support( 'custom-background' );
 		$response = self::perform_active_theme_request();
 		$result   = $response->get_data();
-		$this->assertTrue( isset( $result[0]['theme_supports'] ) );
-		$this->assertTrue( isset( $result[0]['theme_supports']['custom-background'] ) );
+		$this->assertArrayHasKey( 'theme_supports', $result[0] );
+		$this->assertArrayHasKey( 'custom-background', $result[0]['theme_supports'] );
 		$this->assertFalse( $result[0]['theme_supports']['custom-background'] );
 	}
 
@@ -459,7 +460,7 @@ class WP_Test_REST_Themes_Controller extends WP_Test_REST_Controller_Testcase {
 		add_theme_support( 'custom-background', $background );
 		$response = self::perform_active_theme_request();
 		$result   = $response->get_data();
-		$this->assertTrue( isset( $result[0]['theme_supports'] ) );
+		$this->assertArrayHasKey( 'theme_supports', $result[0] );
 
 		$expected = array_diff_key( $background, array_flip( $excluded ) );
 		$this->assertEquals( $expected, $result[0]['theme_supports']['custom-background'] );
@@ -472,8 +473,8 @@ class WP_Test_REST_Themes_Controller extends WP_Test_REST_Controller_Testcase {
 		remove_theme_support( 'html5' );
 		$response = self::perform_active_theme_request();
 		$result   = $response->get_data();
-		$this->assertTrue( isset( $result[0]['theme_supports'] ) );
-		$this->assertTrue( isset( $result[0]['theme_supports']['html5'] ) );
+		$this->assertArrayHasKey( 'theme_supports', $result[0] );
+		$this->assertArrayHasKey( 'html5', $result[0]['theme_supports'] );
 		$this->assertFalse( $result[0]['theme_supports']['html5'] );
 	}
 
@@ -494,7 +495,7 @@ class WP_Test_REST_Themes_Controller extends WP_Test_REST_Controller_Testcase {
 		add_theme_support( 'html5', $html5 );
 		$response = self::perform_active_theme_request();
 		$result   = $response->get_data();
-		$this->assertTrue( isset( $result[0]['theme_supports'] ) );
+		$this->assertArrayHasKey( 'theme_supports', $result[0] );
 		$this->assertEquals( $html5, $result[0]['theme_supports']['html5'] );
 	}
 
@@ -505,8 +506,8 @@ class WP_Test_REST_Themes_Controller extends WP_Test_REST_Controller_Testcase {
 		remove_theme_support( 'title-tag' );
 		$response = self::perform_active_theme_request();
 		$result   = $response->get_data();
-		$this->assertTrue( isset( $result[0]['theme_supports'] ) );
-		$this->assertTrue( isset( $result[0]['theme_supports']['title-tag'] ) );
+		$this->assertArrayHasKey( 'theme_supports', $result[0] );
+		$this->assertArrayHasKey( 'title-tag', $result[0]['theme_supports'] );
 		$this->assertFalse( $result[0]['theme_supports']['title-tag'] );
 	}
 
@@ -518,7 +519,7 @@ class WP_Test_REST_Themes_Controller extends WP_Test_REST_Controller_Testcase {
 		$_wp_theme_features['title-tag'] = true;
 		$response                        = self::perform_active_theme_request();
 		$result                          = $response->get_data();
-		$this->assertTrue( isset( $result[0]['theme_supports'] ) );
+		$this->assertArrayHasKey( 'theme_supports', $result[0] );
 		$this->assertTrue( $result[0]['theme_supports']['title-tag'] );
 	}
 
@@ -529,8 +530,8 @@ class WP_Test_REST_Themes_Controller extends WP_Test_REST_Controller_Testcase {
 		remove_theme_support( 'customize-selective-refresh-widgets' );
 		$response = self::perform_active_theme_request();
 		$result   = $response->get_data();
-		$this->assertTrue( isset( $result[0]['theme_supports'] ) );
-		$this->assertTrue( isset( $result[0]['theme_supports']['customize-selective-refresh-widgets'] ) );
+		$this->assertArrayHasKey( 'theme_supports', $result[0] );
+		$this->assertArrayHasKey( 'customize-selective-refresh-widgets', $result[0]['theme_supports'] );
 		$this->assertFalse( $result[0]['theme_supports']['customize-selective-refresh-widgets'] );
 	}
 
@@ -542,7 +543,7 @@ class WP_Test_REST_Themes_Controller extends WP_Test_REST_Controller_Testcase {
 		add_theme_support( 'customize-selective-refresh-widgets' );
 		$response = self::perform_active_theme_request();
 		$result   = $response->get_data();
-		$this->assertTrue( isset( $result[0]['theme_supports'] ) );
+		$this->assertArrayHasKey( 'theme_supports', $result[0] );
 		$this->assertTrue( $result[0]['theme_supports']['customize-selective-refresh-widgets'] );
 	}
 
@@ -553,8 +554,8 @@ class WP_Test_REST_Themes_Controller extends WP_Test_REST_Controller_Testcase {
 		remove_theme_support( 'wp-block-styles' );
 		$response = self::perform_active_theme_request();
 		$result   = $response->get_data();
-		$this->assertTrue( isset( $result[0]['theme_supports'] ) );
-		$this->assertTrue( isset( $result[0]['theme_supports']['wp-block-styles'] ) );
+		$this->assertArrayHasKey( 'theme_supports', $result[0] );
+		$this->assertArrayHasKey( 'wp-block-styles', $result[0]['theme_supports'] );
 		$this->assertFalse( $result[0]['theme_supports']['wp-block-styles'] );
 	}
 
@@ -566,7 +567,7 @@ class WP_Test_REST_Themes_Controller extends WP_Test_REST_Controller_Testcase {
 		add_theme_support( 'wp-block-styles' );
 		$response = self::perform_active_theme_request();
 		$result   = $response->get_data();
-		$this->assertTrue( isset( $result[0]['theme_supports'] ) );
+		$this->assertArrayHasKey( 'theme_supports', $result[0] );
 		$this->assertTrue( $result[0]['theme_supports']['wp-block-styles'] );
 	}
 
@@ -577,8 +578,8 @@ class WP_Test_REST_Themes_Controller extends WP_Test_REST_Controller_Testcase {
 		remove_theme_support( 'align-wide' );
 		$response = self::perform_active_theme_request();
 		$result   = $response->get_data();
-		$this->assertTrue( isset( $result[0]['theme_supports'] ) );
-		$this->assertTrue( isset( $result[0]['theme_supports']['align-wide'] ) );
+		$this->assertArrayHasKey( 'theme_supports', $result[0] );
+		$this->assertArrayHasKey( 'align-wide', $result[0]['theme_supports'] );
 		$this->assertFalse( $result[0]['theme_supports']['align-wide'] );
 	}
 
@@ -590,7 +591,7 @@ class WP_Test_REST_Themes_Controller extends WP_Test_REST_Controller_Testcase {
 		add_theme_support( 'align-wide' );
 		$response = self::perform_active_theme_request();
 		$result   = $response->get_data();
-		$this->assertTrue( isset( $result[0]['theme_supports'] ) );
+		$this->assertArrayHasKey( 'theme_supports', $result[0] );
 		$this->assertTrue( $result[0]['theme_supports']['align-wide'] );
 	}
 
@@ -601,8 +602,8 @@ class WP_Test_REST_Themes_Controller extends WP_Test_REST_Controller_Testcase {
 		remove_theme_support( 'editor-styles' );
 		$response = self::perform_active_theme_request();
 		$result   = $response->get_data();
-		$this->assertTrue( isset( $result[0]['theme_supports'] ) );
-		$this->assertTrue( isset( $result[0]['theme_supports']['editor-styles'] ) );
+		$this->assertArrayHasKey( 'theme_supports', $result[0] );
+		$this->assertArrayHasKey( 'editor-styles', $result[0]['theme_supports'] );
 		$this->assertFalse( $result[0]['theme_supports']['editor-styles'] );
 	}
 
@@ -614,7 +615,7 @@ class WP_Test_REST_Themes_Controller extends WP_Test_REST_Controller_Testcase {
 		add_theme_support( 'editor-styles' );
 		$response = self::perform_active_theme_request();
 		$result   = $response->get_data();
-		$this->assertTrue( isset( $result[0]['theme_supports'] ) );
+		$this->assertArrayHasKey( 'theme_supports', $result[0] );
 		$this->assertTrue( $result[0]['theme_supports']['editor-styles'] );
 	}
 
@@ -625,8 +626,8 @@ class WP_Test_REST_Themes_Controller extends WP_Test_REST_Controller_Testcase {
 		remove_theme_support( 'dark-editor-style' );
 		$response = self::perform_active_theme_request();
 		$result   = $response->get_data();
-		$this->assertTrue( isset( $result[0]['theme_supports'] ) );
-		$this->assertTrue( isset( $result[0]['theme_supports']['dark-editor-style'] ) );
+		$this->assertArrayHasKey( 'theme_supports', $result[0] );
+		$this->assertArrayHasKey( 'dark-editor-style', $result[0]['theme_supports'] );
 		$this->assertFalse( $result[0]['theme_supports']['dark-editor-style'] );
 	}
 
@@ -638,7 +639,7 @@ class WP_Test_REST_Themes_Controller extends WP_Test_REST_Controller_Testcase {
 		add_theme_support( 'dark-editor-style' );
 		$response = self::perform_active_theme_request();
 		$result   = $response->get_data();
-		$this->assertTrue( isset( $result[0]['theme_supports'] ) );
+		$this->assertArrayHasKey( 'theme_supports', $result[0] );
 		$this->assertTrue( $result[0]['theme_supports']['dark-editor-style'] );
 	}
 
@@ -649,8 +650,8 @@ class WP_Test_REST_Themes_Controller extends WP_Test_REST_Controller_Testcase {
 		remove_theme_support( 'disable-custom-gradients' );
 		$response = self::perform_active_theme_request();
 		$result   = $response->get_data();
-		$this->assertTrue( isset( $result[0]['theme_supports'] ) );
-		$this->assertTrue( isset( $result[0]['theme_supports']['disable-custom-gradients'] ) );
+		$this->assertArrayHasKey( 'theme_supports', $result[0] );
+		$this->assertArrayHasKey( 'disable-custom-gradients', $result[0]['theme_supports'] );
 		$this->assertFalse( $result[0]['theme_supports']['disable-custom-gradients'] );
 	}
 
@@ -662,7 +663,7 @@ class WP_Test_REST_Themes_Controller extends WP_Test_REST_Controller_Testcase {
 		add_theme_support( 'disable-custom-gradients' );
 		$response = self::perform_active_theme_request();
 		$result   = $response->get_data();
-		$this->assertTrue( isset( $result[0]['theme_supports'] ) );
+		$this->assertArrayHasKey( 'theme_supports', $result[0] );
 		$this->assertTrue( $result[0]['theme_supports']['disable-custom-gradients'] );
 	}
 
@@ -679,7 +680,7 @@ class WP_Test_REST_Themes_Controller extends WP_Test_REST_Controller_Testcase {
 		add_theme_support( 'editor-gradient-presets', array( $gradient ) );
 		$response = self::perform_active_theme_request();
 		$result   = $response->get_data();
-		$this->assertTrue( isset( $result[0]['theme_supports'] ) );
+		$this->assertArrayHasKey( 'theme_supports', $result[0] );
 		$this->assertEquals( array( $gradient ), $result[0]['theme_supports']['editor-gradient-presets'] );
 	}
 

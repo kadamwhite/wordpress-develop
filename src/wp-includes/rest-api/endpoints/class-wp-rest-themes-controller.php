@@ -133,9 +133,11 @@ class WP_REST_Themes_Controller extends WP_REST_Controller {
 					// None of the Core theme supports have variadic args.
 					$support = $support[0];
 
-					if ( is_array( $schema['type'] ) && in_array( 'boolean', $schema['type'], true ) ) {
-						// The schema sanitizer cannot handle a value that won't pass validation when using multiple types.
-						// This happens when a theme support has properties that are not not defined in the schema.
+					// Core multi-type theme-support schema definitions always list boolean first.
+					if ( is_array( $schema['type'] ) && 'boolean' === $schema['type'][0] ) {
+						// Pass the non-boolean type through to the sanitizer, which cannot itself
+						// determine the intended type if the value is invalid (for example if an
+						// object includes non-safelisted properties).
 						$schema['type'] = $schema['type'][1];
 					}
 				}
