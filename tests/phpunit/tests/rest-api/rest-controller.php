@@ -309,6 +309,9 @@ class WP_Test_REST_Controller extends WP_Test_REST_TestCase {
 		$controller->prepare_item_for_response( array(), $request );
 
 		$this->assertGreaterThan( 0, $listener->get_call_count( $method ) );
+
+		global $wp_rest_additional_fields;
+		$wp_rest_additional_fields = array();
 	}
 
 	public function test_filtering_fields_for_response_by_context_returns_fields_with_no_context() {
@@ -337,6 +340,9 @@ class WP_Test_REST_Controller extends WP_Test_REST_TestCase {
 		$controller->prepare_item_for_response( array(), $request );
 
 		$this->assertGreaterThan( 0, $listener->get_call_count( $method ) );
+
+		global $wp_rest_additional_fields;
+		$wp_rest_additional_fields = array();
 	}
 
 	public function test_filtering_fields_for_response_by_context_returns_fields_with_no_schema() {
@@ -362,6 +368,9 @@ class WP_Test_REST_Controller extends WP_Test_REST_TestCase {
 		$controller->prepare_item_for_response( array(), $request );
 
 		$this->assertGreaterThan( 0, $listener->get_call_count( $method ) );
+
+		global $wp_rest_additional_fields;
+		$wp_rest_additional_fields = array();
 	}
 
 	/**
@@ -436,5 +445,131 @@ class WP_Test_REST_Controller extends WP_Test_REST_TestCase {
 		$controller->prepare_item_for_response( $item, $request );
 
 		$this->assertTrue( $listener->get_call_count( $method ) > $first_call_count );
+
+		global $wp_rest_additional_fields;
+		$wp_rest_additional_fields = array();
+	}
+
+	/**
+	 * @dataProvider data_filter_registered_rest_fields
+	 * @ticket 49648
+	 */
+	public function test_filter_registered_rest_fields( $filter, $expected ) {
+		$controller = new WP_REST_Test_Controller();
+
+		register_rest_field(
+			'type',
+			'field',
+			array(
+				'schema' => array(
+					'type'        => 'object',
+					'description' => 'A complex object',
+					'context'     => array( 'view', 'edit' ),
+					'properties'  => array(
+						'a' => array(
+							'i'  => 'string',
+							'ii' => 'string',
+						),
+						'b' => array(
+							'iii' => 'string',
+							'iv'  => 'string',
+						),
+					),
+				),
+				'get_callback' => array( $this, 'register_rest_field_get_callback' ),
+			),
+		);
+
+		$request = new WP_REST_Request( 'GET', '/wp/v2/testroute' );
+		$request->set_param( '_fields', $filter );
+
+		$response = $controller->prepare_item_for_response( array(), $request );
+
+		$this->assertEquals( $expected, $response->get_data() );
+
+		global $wp_rest_additional_fields;
+		$wp_rest_additional_fields = array();
+	}
+
+	public function register_rest_field_get_callback() {
+		return array(
+			'a' => array(
+				'i' => 'value i',
+				'ii' => 'value ii',
+			),
+			'b' => array(
+				'iii' => 'value iii',
+				'iv' => 'value iv',
+			),
+		);
+	}
+
+	public function data_filter_registered_rest_fields() {
+		return array(
+			array(
+				'field',
+				array(
+					'field' => array(
+						'a' => array(
+							'i' => 'value i',
+							'ii' => 'value ii',
+						),
+						'b' => array(
+							'iii' => 'value iii',
+							'iv' => 'value iv',
+						),
+					),
+				),
+			),
+			array(
+				'field.a',
+				array(
+					'field' => array(
+						'a' => array(
+							'i' => 'value i',
+							'ii' => 'value ii',
+						),
+					),
+				),
+			),
+			array(
+				'field.b',
+				array(
+					'field' => array(
+						'b' => array(
+							'iii' => 'value iii',
+							'iv' => 'value iv',
+						),
+					),
+				),
+			),
+			array(
+				'field.a.i,field.b.iv',
+				array(
+					'field' => array(
+						'a' => array(
+							'i' => 'value i',
+						),
+						'b' => array(
+							'iv' => 'value iv',
+						),
+					),
+				),
+			),
+			array(
+				'field.a,field.b.iii',
+				array(
+					'field' => array(
+						'a' => array(
+							'i' => 'value i',
+							'ii' => 'value ii',
+						),
+						'b' => array(
+							'iii' => 'value iii',
+						),
+					),
+				),
+			),
+		);
 	}
 }
