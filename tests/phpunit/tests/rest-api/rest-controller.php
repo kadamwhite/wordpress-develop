@@ -48,6 +48,13 @@ class WP_Test_REST_Controller extends WP_Test_REST_TestCase {
 		);
 	}
 
+	public function tearDown() {
+		parent::tearDown();
+
+		global $wp_rest_additional_fields;
+		$wp_rest_additional_fields = array();
+	}
+
 	public function test_validate_schema_type_integer() {
 
 		$this->assertTrue(
@@ -309,9 +316,6 @@ class WP_Test_REST_Controller extends WP_Test_REST_TestCase {
 		$controller->prepare_item_for_response( array(), $request );
 
 		$this->assertGreaterThan( 0, $listener->get_call_count( $method ) );
-
-		global $wp_rest_additional_fields;
-		$wp_rest_additional_fields = array();
 	}
 
 	public function test_filtering_fields_for_response_by_context_returns_fields_with_no_context() {
@@ -340,9 +344,6 @@ class WP_Test_REST_Controller extends WP_Test_REST_TestCase {
 		$controller->prepare_item_for_response( array(), $request );
 
 		$this->assertGreaterThan( 0, $listener->get_call_count( $method ) );
-
-		global $wp_rest_additional_fields;
-		$wp_rest_additional_fields = array();
 	}
 
 	public function test_filtering_fields_for_response_by_context_returns_fields_with_no_schema() {
@@ -368,9 +369,6 @@ class WP_Test_REST_Controller extends WP_Test_REST_TestCase {
 		$controller->prepare_item_for_response( array(), $request );
 
 		$this->assertGreaterThan( 0, $listener->get_call_count( $method ) );
-
-		global $wp_rest_additional_fields;
-		$wp_rest_additional_fields = array();
 	}
 
 	/**
@@ -445,9 +443,6 @@ class WP_Test_REST_Controller extends WP_Test_REST_TestCase {
 		$controller->prepare_item_for_response( $item, $request );
 
 		$this->assertTrue( $listener->get_call_count( $method ) > $first_call_count );
-
-		global $wp_rest_additional_fields;
-		$wp_rest_additional_fields = array();
 	}
 
 	/**
@@ -461,7 +456,7 @@ class WP_Test_REST_Controller extends WP_Test_REST_TestCase {
 			'type',
 			'field',
 			array(
-				'schema' => array(
+				'schema'       => array(
 					'type'        => 'object',
 					'description' => 'A complex object',
 					'context'     => array( 'view', 'edit' ),
@@ -487,20 +482,17 @@ class WP_Test_REST_Controller extends WP_Test_REST_TestCase {
 		$response = rest_filter_response_fields( $response, rest_get_server(), $request );
 
 		$this->assertEquals( $expected, $response->get_data() );
-
-		global $wp_rest_additional_fields;
-		$wp_rest_additional_fields = array();
 	}
 
 	public function register_nested_rest_field_get_callback() {
 		return array(
 			'a' => array(
-				'i' => 'value i',
+				'i'  => 'value i',
 				'ii' => 'value ii',
 			),
 			'b' => array(
 				'iii' => 'value iii',
-				'iv' => 'value iv',
+				'iv'  => 'value iv',
 			),
 		);
 	}
@@ -512,12 +504,12 @@ class WP_Test_REST_Controller extends WP_Test_REST_TestCase {
 				array(
 					'field' => array(
 						'a' => array(
-							'i' => 'value i',
+							'i'  => 'value i',
 							'ii' => 'value ii',
 						),
 						'b' => array(
 							'iii' => 'value iii',
-							'iv' => 'value iv',
+							'iv'  => 'value iv',
 						),
 					),
 				),
@@ -527,7 +519,7 @@ class WP_Test_REST_Controller extends WP_Test_REST_TestCase {
 				array(
 					'field' => array(
 						'a' => array(
-							'i' => 'value i',
+							'i'  => 'value i',
 							'ii' => 'value ii',
 						),
 					),
@@ -539,7 +531,7 @@ class WP_Test_REST_Controller extends WP_Test_REST_TestCase {
 					'field' => array(
 						'b' => array(
 							'iii' => 'value iii',
-							'iv' => 'value iv',
+							'iv'  => 'value iv',
 						),
 					),
 				),
@@ -562,7 +554,7 @@ class WP_Test_REST_Controller extends WP_Test_REST_TestCase {
 				array(
 					'field' => array(
 						'a' => array(
-							'i' => 'value i',
+							'i'  => 'value i',
 							'ii' => 'value ii',
 						),
 						'b' => array(

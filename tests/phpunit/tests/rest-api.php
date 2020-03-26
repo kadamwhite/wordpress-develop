@@ -572,12 +572,12 @@ class Tests_REST_API extends WP_UnitTestCase {
 			array(
 				'field' => array(
 					'a' => array(
-						'i' => 'value i',
+						'i'  => 'value i',
 						'ii' => 'value ii',
 					),
 					'b' => array(
 						'iii' => 'value iii',
-						'iv' => 'value iv',
+						'iv'  => 'value iv',
 					),
 				),
 			)
