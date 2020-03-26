@@ -446,7 +446,7 @@ class WP_Test_REST_Controller extends WP_Test_REST_TestCase {
 	}
 
 	/**
-	 * @dataProvider data_filter_registered_rest_fields
+	 * @dataProvider data_filter_nested_registered_rest_fields
 	 * @ticket 49648
 	 */
 	public function test_filter_nested_registered_rest_fields( $filter, $expected ) {
@@ -472,7 +472,7 @@ class WP_Test_REST_Controller extends WP_Test_REST_TestCase {
 					),
 				),
 				'get_callback' => array( $this, 'register_nested_rest_field_get_callback' ),
-			),
+			)
 		);
 
 		$request = new WP_REST_Request( 'GET', '/wp/v2/testroute' );
