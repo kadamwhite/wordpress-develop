@@ -383,7 +383,7 @@ class Tests_Canonical extends WP_Canonical_UnitTestCase {
 	 */
 	public function test_feed_canonical_with_not_exists_query() {
 		// Set a NOT EXISTS tax_query on the global query.
-		$global_query = $GLOBALS['wp_query'];
+		$global_query        = $GLOBALS['wp_query'];
 		$GLOBALS['wp_query'] = new WP_Query(
 			array(
 				'post_type' => 'post',
